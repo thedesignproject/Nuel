@@ -1,12 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import { TopBar } from '../components/TopBar';
 import { Sidebar } from '../components/Sidebar';
+import { NotificationsPanel } from '../components/NotificationsPanel';
 import { MetricCard } from '../components/MetricCard';
 import { UntappedPotentialTable } from '../components/UntappedPotentialTable';
 import { LAYOUT_SPACING } from '../design-tokens';
 
 export default function GapsPage() {
+  const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
       {/* Grid Background */}
@@ -24,7 +28,12 @@ export default function GapsPage() {
       <div className="relative z-10 flex h-screen overflow-hidden">
         {/* Sidebar - Sticky */}
         <div className="h-screen sticky top-0 z-30" style={{ padding: LAYOUT_SPACING.pageEdge }}>
-          <Sidebar mode="executive" variant="expanded" activeItem="gaps" />
+          <Sidebar
+            mode="executive"
+            variant="expanded"
+            activeItem="gaps"
+            onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+          />
         </div>
 
         {/* Main Content Area */}
@@ -121,6 +130,12 @@ export default function GapsPage() {
           </div>
         </div>
       </div>
+
+      {/* Notifications Panel */}
+      <NotificationsPanel
+        isOpen={isNotificationsPanelOpen}
+        onClose={() => setIsNotificationsPanelOpen(false)}
+      />
     </div>
   );
 }

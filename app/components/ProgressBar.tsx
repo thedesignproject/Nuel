@@ -3,6 +3,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { GearSix } from '@phosphor-icons/react';
+import { warning, success, error, info } from '../../lib/design-tokens/colors';
 
 export type ProgressBarSize = 'xl' | 'lg';
 export type ProgressBarStatus = 'critical' | 'warning' | 'good' | 'excellent';
@@ -66,26 +67,26 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
     const getStatusColor = (): string => {
       switch (status) {
         case 'critical':
-          return '#FF3B30';
+          return error[500];
         case 'warning':
-          return '#FFD400';
+          return warning[500];
         case 'good':
-          return '#34C759';
+          return success[500];
         case 'excellent':
-          return '#007AFF';
+          return info[500];
       }
     };
 
     const getStatusBadgeStyle = () => {
       switch (status) {
         case 'critical':
-          return { backgroundColor: '#FFD6DB', color: '#FF3B30' };
+          return { backgroundColor: error[100], color: error[500] };
         case 'warning':
-          return { backgroundColor: '#FFF5CC', color: '#B8A000' };
+          return { backgroundColor: warning[100], color: warning[500] };
         case 'good':
-          return { backgroundColor: '#D6F5E1', color: '#34C759' };
+          return { backgroundColor: success[100], color: success[500] };
         case 'excellent':
-          return { backgroundColor: '#D6EDFF', color: '#007AFF' };
+          return { backgroundColor: info[100], color: info[500] };
       }
     };
 
@@ -113,13 +114,13 @@ export const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
           </div>
 
           {/* Warning Badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: '#FFF5CC', borderRadius: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: warning[100], borderRadius: '6px' }}>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M6 1L1 11H11L6 1Z" fill="#FFD400" />
+              <path d="M6 1L1 11H11L6 1Z" fill={warning[500]} />
               <path d="M6 4V7" stroke="#17263D" strokeWidth="1.5" strokeLinecap="round" />
               <circle cx="6" cy="9" r="0.5" fill="#17263D" />
             </svg>
-            <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#B8A000', fontFamily: 'DM Sans' }}>
+            <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: warning[500], fontFamily: 'DM Sans' }}>
               {warningMessage}
             </p>
           </div>

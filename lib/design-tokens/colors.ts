@@ -96,9 +96,9 @@ export const success = {
 // Signals caution or something that requires user attention.
 export const warning = {
   100: '#FFF5CC',
-  300: '#FFE066',
-  500: '#FFD400',
-  700: '#A58B00',
+  300: '#E6B800',
+  500: '#C9A700',
+  700: '#8C7500',
   900: '#5F5600',
 } as const;
 

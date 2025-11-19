@@ -210,7 +210,7 @@ export const UntappedPotentialTable = React.forwardRef<HTMLDivElement, UntappedP
           <div
             style={{
               position: 'relative',
-              width: '474px',
+              width: '320px',
               maxWidth: '100%',
             }}
           >
@@ -261,7 +261,7 @@ export const UntappedPotentialTable = React.forwardRef<HTMLDivElement, UntappedP
               ]}
               onChange={setRegionFilter}
               variant="secondary"
-              width="115px"
+              width="145px"
             />
             <Dropdown
               value={managerFilter}
@@ -274,7 +274,7 @@ export const UntappedPotentialTable = React.forwardRef<HTMLDivElement, UntappedP
               ]}
               onChange={setManagerFilter}
               variant="secondary"
-              width="131px"
+              width="160px"
             />
             <Dropdown
               value={categoryFilter}
@@ -286,7 +286,7 @@ export const UntappedPotentialTable = React.forwardRef<HTMLDivElement, UntappedP
               ]}
               onChange={setCategoryFilter}
               variant="secondary"
-              width="136px"
+              width="165px"
             />
             <Dropdown
               value={priorityFilter}
@@ -298,7 +298,7 @@ export const UntappedPotentialTable = React.forwardRef<HTMLDivElement, UntappedP
               ]}
               onChange={setPriorityFilter}
               variant="secondary"
-              width="126px"
+              width="150px"
             />
             <Dropdown
               value={statusFilter}
@@ -310,7 +310,7 @@ export const UntappedPotentialTable = React.forwardRef<HTMLDivElement, UntappedP
               ]}
               onChange={setStatusFilter}
               variant="secondary"
-              width="108px"
+              width="135px"
             />
           </div>
         </div>

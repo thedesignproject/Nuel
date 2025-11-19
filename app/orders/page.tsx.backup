@@ -391,26 +391,15 @@ export default function ManagementOrdersPage() {
                     />
                   </div>
 
-                  {/* Filter Button - Icon Only */}
-                  <button
-                    onClick={() => {}}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '44px',
-                      height: '44px',
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #17263D',
-                      borderRadius: '10px',
-                      cursor: 'pointer',
-                      transition: 'background-color 0.2s',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#FFFFFF')}
+                  {/* Filter Button */}
+                  <Button
+                    variant="secondary"
+                    size="medium"
+                    iconLeft={<FunnelSimple size={16} weight="regular" />}
+                    style={{ width: '88px' }}
                   >
-                    <FunnelSimple size={20} weight="regular" color="#1339A0" />
-                  </button>
+                    Filter
+                  </Button>
                 </div>
 
                 {/* Orders Table with Horizontal Scroll */}

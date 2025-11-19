@@ -88,7 +88,7 @@ export const COLORS = {
     },
     warning: {
       100: '#FFF5CC',
-      500: '#FFD400',
+      500: '#C9A700',
     },
     info: {
       100: '#D6EDFF',

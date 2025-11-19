@@ -193,7 +193,7 @@ export const InventoryDetailsTable = React.forwardRef<HTMLDivElement, InventoryD
               ]}
               onChange={setItemsFilter}
               variant="secondary"
-              width="104px"
+              width="130px"
             />
             <Dropdown
               value={statusFilter}
@@ -205,7 +205,7 @@ export const InventoryDetailsTable = React.forwardRef<HTMLDivElement, InventoryD
               ]}
               onChange={setStatusFilter}
               variant="secondary"
-              width="123px"
+              width="150px"
             />
             <Dropdown
               value={typesFilter}
@@ -216,7 +216,7 @@ export const InventoryDetailsTable = React.forwardRef<HTMLDivElement, InventoryD
               ]}
               onChange={setTypesFilter}
               variant="secondary"
-              width="105px"
+              width="130px"
             />
           </div>
         </div>

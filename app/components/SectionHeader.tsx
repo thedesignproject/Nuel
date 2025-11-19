@@ -3,6 +3,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { ChartLine, ImageSquare, GearSix, CaretDown } from '@phosphor-icons/react';
+import { warning, success, error, info } from '../../lib/design-tokens/colors';
 
 // ============================================
 // TYPE DEFINITIONS
@@ -106,13 +107,13 @@ const getFilterStyles = (variant: FilterVariant, active: boolean = false) => {
 
   switch (variant) {
     case 'error':
-      return cn(baseStyles, 'bg-[#FFD6DB] text-[#FF3B30] border border-[#FF3B30]');
+      return cn(baseStyles, `bg-[${error[100]}] text-[${error[500]}] border border-[${error[500]}]`);
     case 'warning':
-      return cn(baseStyles, 'bg-[#FFF5CC] text-[#FFD400] border border-[#FFD400]');
+      return cn(baseStyles, `bg-[${warning[100]}] text-[${warning[500]}] border border-[${warning[500]}]`);
     case 'success':
-      return cn(baseStyles, 'bg-[#D6F5E1] text-[#34C759] border border-[#34C759]');
+      return cn(baseStyles, `bg-[${success[100]}] text-[${success[500]}] border border-[${success[500]}]`);
     case 'info':
-      return cn(baseStyles, 'bg-[#D6EDFF] text-[#007AFF] border border-[#007AFF]');
+      return cn(baseStyles, `bg-[${info[100]}] text-[${info[500]}] border border-[${info[500]}]`);
     case 'neutral':
     default:
       return cn(baseStyles, 'bg-[#F3F6F9] text-[#17263D] border border-[#D9E0E9]');
@@ -122,13 +123,13 @@ const getFilterStyles = (variant: FilterVariant, active: boolean = false) => {
 const getDotColor = (variant: FilterVariant): string => {
   switch (variant) {
     case 'error':
-      return '#FF3B30';
+      return error[500];
     case 'warning':
-      return '#FFD400';
+      return warning[500];
     case 'success':
-      return '#34C759';
+      return success[500];
     case 'info':
-      return '#007AFF';
+      return info[500];
     case 'neutral':
     default:
       return '#7F8FA4';

@@ -1,11 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { TopBar } from '../../components/TopBar';
 import { Sidebar } from '../../components/Sidebar';
+import { NotificationsPanel } from '../../components/NotificationsPanel';
 import { FileUploadPanel } from '../../components/FileUploadPanel';
 import { LAYOUT_SPACING } from '../../design-tokens';
 
 export default function ManagementDataHubPage() {
+  const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+
   const handleFileUpload = (file: File) => {
     console.log('File uploaded:', file.name);
     // Handle file upload logic here
@@ -38,7 +42,12 @@ export default function ManagementDataHubPage() {
       <div className="relative z-10 flex h-screen overflow-hidden">
         {/* Sidebar - Sticky */}
         <div className="h-screen sticky top-0 z-30" style={{ padding: LAYOUT_SPACING.pageEdge }}>
-          <Sidebar mode="management" variant="expanded" activeItem="data-hub" />
+          <Sidebar
+            mode="management"
+            variant="expanded"
+            activeItem="data-hub"
+            onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+          />
         </div>
 
         {/* Main Content Area */}
@@ -94,6 +103,12 @@ export default function ManagementDataHubPage() {
           </div>
         </div>
       </div>
+
+      {/* Notifications Panel */}
+      <NotificationsPanel
+        isOpen={isNotificationsPanelOpen}
+        onClose={() => setIsNotificationsPanelOpen(false)}
+      />
     </div>
   );
 }

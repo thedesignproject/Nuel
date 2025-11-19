@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { warning } from '../../lib/design-tokens/colors';
 
 export type NotificationSeverity = 'critical' | 'warning' | 'info' | 'success';
 
@@ -63,7 +64,7 @@ export const NotificationCard = React.forwardRef<HTMLDivElement, NotificationCar
       },
       warning: {
         pillBg: 'bg-[#FFF5CC]', // Color/Semantic/Warning/100 (from tokens)
-        badgeColor: 'bg-[#FFD400]', // Color/Semantic/Warning/500
+        badgeColor: `bg-[${warning[500]}]`, // Color/Semantic/Warning/500
         label: 'Warning',
       },
       info: {

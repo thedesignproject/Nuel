@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { X, Bell, WarningCircle, Info, ClockClockwise, CheckCircle } from '@phosphor-icons/react';
 import { StatusPill } from './StatusPill';
 import { Button } from './Button';
+import { warning, error, success } from '../../lib/design-tokens/colors';
 
 // ============================================
 // TYPE DEFINITIONS
@@ -128,13 +129,13 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
 const getNotificationIcon = (type: NotificationType) => {
   switch (type) {
     case 'critical':
-      return { Icon: WarningCircle, color: '#FF3B30' };
+      return { Icon: WarningCircle, color: error[500] };
     case 'warning':
-      return { Icon: ClockClockwise, color: '#FFD400' };
+      return { Icon: ClockClockwise, color: warning[500] };
     case 'info':
       return { Icon: Info, color: '#1C58F7' };
     case 'completed':
-      return { Icon: CheckCircle, color: '#00C48C' };
+      return { Icon: CheckCircle, color: success[500] };
   }
 };
 
@@ -354,37 +355,37 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
               padding: '16px',
               backgroundColor: '#F3F6F9',
               borderRadius: '16px',
-              margin: '0 24px',
+              margin: '16px 24px 0 24px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px',
+              gap: '12px',
             }}
           >
             {/* Count Filters */}
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <Button
-                size="medium"
+                size="small"
                 variant={activeTab === 'all' ? 'primary' : 'secondary'}
                 onClick={() => setActiveTab('all')}
               >
                 All ({localNotifications.length})
               </Button>
               <Button
-                size="medium"
+                size="small"
                 variant={activeTab === 'unread' ? 'primary' : 'secondary'}
                 onClick={() => setActiveTab('unread')}
               >
                 Unread ({unreadCount})
               </Button>
               <Button
-                size="medium"
+                size="small"
                 variant={activeTab === 'alerts' ? 'primary' : 'secondary'}
                 onClick={() => setActiveTab('alerts')}
               >
                 Alerts ({alertsCount})
               </Button>
               <Button
-                size="medium"
+                size="small"
                 variant={activeTab === 'completed' ? 'primary' : 'secondary'}
                 onClick={() => setActiveTab('completed')}
               >
@@ -393,13 +394,13 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
             </div>
 
             {/* Type Filters using StatusPill */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span
                 style={{
                   fontFamily: 'DM Sans',
-                  fontSize: '14px',
+                  fontSize: '12px',
                   fontWeight: 400,
-                  lineHeight: '22px',
+                  lineHeight: '20px',
                   color: '#7F8FA4',
                 }}
               >
@@ -412,7 +413,8 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
                   background: 'none',
                   padding: 0,
                   cursor: 'pointer',
-                  opacity: activeTypeFilters.includes('critical') ? 1 : 0.5,
+                  opacity: activeTypeFilters.includes('critical') ? 1 : 0.4,
+                  transition: 'opacity 150ms ease',
                 }}
               >
                 <StatusPill variant="error" label="Critical" />
@@ -424,7 +426,8 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
                   background: 'none',
                   padding: 0,
                   cursor: 'pointer',
-                  opacity: activeTypeFilters.includes('warning') ? 1 : 0.5,
+                  opacity: activeTypeFilters.includes('warning') ? 1 : 0.4,
+                  transition: 'opacity 150ms ease',
                 }}
               >
                 <StatusPill variant="warning" label="Warning" />
@@ -436,7 +439,8 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
                   background: 'none',
                   padding: 0,
                   cursor: 'pointer',
-                  opacity: activeTypeFilters.includes('completed') ? 1 : 0.5,
+                  opacity: activeTypeFilters.includes('completed') ? 1 : 0.4,
+                  transition: 'opacity 150ms ease',
                 }}
               >
                 <StatusPill variant="good" label="Completed" />
@@ -448,7 +452,8 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
                   background: 'none',
                   padding: 0,
                   cursor: 'pointer',
-                  opacity: activeTypeFilters.includes('info') ? 1 : 0.5,
+                  opacity: activeTypeFilters.includes('info') ? 1 : 0.4,
+                  transition: 'opacity 150ms ease',
                 }}
               >
                 <StatusPill variant="info" label="Scheduled" />
@@ -461,21 +466,21 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
             style={{
               flex: 1,
               overflowY: 'auto',
-              padding: '16px 24px 24px 24px',
+              padding: '24px',
             }}
           >
             {Object.entries(groupedNotifications).map(([day, dayNotifications]) => {
               if (dayNotifications.length === 0) return null;
 
               return (
-                <div key={day} style={{ marginBottom: '24px' }}>
+                <div key={day} style={{ marginBottom: '32px' }}>
                   {/* Day Divider */}
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '16px',
-                      marginBottom: '12px',
+                      marginBottom: '16px',
                       width: '100%',
                     }}
                   >
@@ -511,30 +516,15 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
                         <div
                           key={notification.id}
                           style={{
-                            position: 'relative',
                             backgroundColor: '#FFFFFF',
-                            paddingBottom: '16px',
+                            padding: '16px 0',
                             borderBottom: (isLastInDay && isLastDay) ? 'none' : '0.5px solid #D9E0E9',
                             display: 'flex',
+                            alignItems: 'flex-start',
                             gap: '16px',
                             transition: 'all 150ms ease-in-out',
                           }}
                         >
-                          {/* Blue Dot for Unread */}
-                          {notification.isUnread && (
-                            <div
-                              style={{
-                                position: 'absolute',
-                                top: '2px',
-                                left: '0',
-                                width: '10px',
-                                height: '10px',
-                                borderRadius: '50%',
-                                backgroundColor: '#007AFF',
-                              }}
-                            />
-                          )}
-
                           {/* Icon */}
                           <div
                             style={{
@@ -616,6 +606,20 @@ export const NotificationsPanel = React.forwardRef<HTMLDivElement, Notifications
                               </div>
                             </div>
                           </div>
+
+                          {/* Blue Dot for Unread - aligned to the end */}
+                          {notification.isUnread && (
+                            <div
+                              style={{
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                backgroundColor: '#007AFF',
+                                flexShrink: 0,
+                                marginTop: '2px',
+                              }}
+                            />
+                          )}
                         </div>
                       );
                     })}

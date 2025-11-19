@@ -120,9 +120,9 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       } else {
         setInternalMode(newMode);
       }
-      // Navigate to the appropriate dashboard when mode changes
+      // Navigate to the appropriate page when mode changes
       if (newMode === 'management') {
-        router.push('/management/dashboard');
+        router.push('/management/inventory');
       } else {
         router.push('/dashboard');
       }
@@ -224,8 +224,8 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {/* Navigation Section */}
           <div className="flex-1 flex flex-col gap-[8px] px-[16px] py-[24px] min-h-0">
             {navItems.map((item) => {
-              // Special handling for notifications item
-              if (item.id === 'notifications' && onNotificationsClick) {
+              // Special handling for notifications item - always render as button, never navigate
+              if (item.id === 'notifications') {
                 return (
                   <button
                     key={item.id}

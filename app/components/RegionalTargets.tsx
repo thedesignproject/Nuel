@@ -7,6 +7,7 @@ import { Modal } from './Modal';
 import { Input } from './Input';
 import { Button } from './Button';
 import { ChartLine, CaretDown, CaretUp, Factory, Cube, GearSix } from '@phosphor-icons/react';
+import { warning } from '../../lib/design-tokens/colors';
 
 export interface RegionalTargetsProps {
   className?: string;
@@ -71,8 +72,8 @@ export const RegionalTargets = React.forwardRef<HTMLDivElement, RegionalTargetsP
       ),
       KMS: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="8" fill="#FFD400" opacity="0.2" />
-          <circle cx="12" cy="12" r="4" fill="#FFD400" />
+          <circle cx="12" cy="12" r="8" fill={warning[500]} opacity="0.2" />
+          <circle cx="12" cy="12" r="4" fill={warning[500]} />
         </svg>
       ),
       'Thio-Sul': (
@@ -393,9 +394,9 @@ export const RegionalTargets = React.forwardRef<HTMLDivElement, RegionalTargetsP
                   </p>
 
                   {/* Alert Badge */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: '#FFF5CC', borderRadius: '6px', marginLeft: 'auto' }}>
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#FFD400' }} />
-                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#B8A000', fontFamily: 'DM Sans' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: warning[100], borderRadius: '6px', marginLeft: 'auto' }}>
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: warning[500] }} />
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: warning[500], fontFamily: 'DM Sans' }}>
                       1 Alert
                     </p>
                   </div>

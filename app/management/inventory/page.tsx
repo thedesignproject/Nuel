@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { TopBar } from '../../components/TopBar';
 import { Sidebar } from '../../components/Sidebar';
+import { NotificationsPanel } from '../../components/NotificationsPanel';
 import { InventoryAlerts } from '../../components/InventoryAlerts';
 import { InventoryMap } from '../../components/InventoryMap';
 import { RegionalTargets } from '../../components/RegionalTargets';
@@ -9,6 +11,8 @@ import { InventoryDetailsTable } from '../../components/InventoryDetailsTable';
 import { LAYOUT_SPACING } from '../../design-tokens';
 
 export default function ManagementInventoryPage() {
+  const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
       {/* Grid Background */}
@@ -26,7 +30,12 @@ export default function ManagementInventoryPage() {
       <div className="relative z-10 flex h-screen overflow-hidden">
         {/* Sidebar - Sticky */}
         <div className="h-screen sticky top-0 z-30" style={{ padding: LAYOUT_SPACING.pageEdge }}>
-          <Sidebar mode="management" variant="expanded" activeItem="inventory" />
+          <Sidebar
+            mode="management"
+            variant="expanded"
+            activeItem="inventory"
+            onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+          />
         </div>
 
         {/* Main Content Area */}
@@ -72,6 +81,12 @@ export default function ManagementInventoryPage() {
           </div>
         </div>
       </div>
+
+      {/* Notifications Panel */}
+      <NotificationsPanel
+        isOpen={isNotificationsPanelOpen}
+        onClose={() => setIsNotificationsPanelOpen(false)}
+      />
     </div>
   );
 }

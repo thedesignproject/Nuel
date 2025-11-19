@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
 import { Dropdown } from './Dropdown';
 import { MapPin, Plus, Minus, ArrowsOut, Crosshair } from '@phosphor-icons/react';
+import { warning } from '../../lib/design-tokens/colors';
 
 export interface InventoryMapProps {
   className?: string;
@@ -176,7 +177,7 @@ export const InventoryMap = React.forwardRef<HTMLDivElement, InventoryMapProps>(
                 </p>
               </div>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '9999px', backgroundColor: '#FFD400' }} />
+                <div style={{ width: '8px', height: '8px', borderRadius: '9999px', backgroundColor: warning[500] }} />
                 <p style={{ fontSize: '14px', lineHeight: '22px', color: '#17263D', fontFamily: 'DM Sans' }}>
                   Low
                 </p>

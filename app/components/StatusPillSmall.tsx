@@ -7,11 +7,11 @@ import { warning, success, error, info, neutral } from '../../lib/design-tokens/
 // TYPE DEFINITIONS
 // ============================================
 
-export type StatusVariant = 'good' | 'warning' | 'excellent' | 'error' | 'info' | 'neutral';
+export type StatusVariantSmall = 'good' | 'warning' | 'excellent' | 'error' | 'info' | 'neutral';
 
-export interface StatusPillProps {
+export interface StatusPillSmallProps {
   /** Status variant determining colors */
-  variant: StatusVariant;
+  variant: StatusVariantSmall;
 
   /** Label text to display */
   label: string;
@@ -24,7 +24,7 @@ export interface StatusPillProps {
 // HELPER FUNCTIONS
 // ============================================
 
-const getStatusStyles = (variant: StatusVariant) => {
+const getStatusStyles = (variant: StatusVariantSmall) => {
   switch (variant) {
     case 'good':
       return {
@@ -71,11 +71,11 @@ const getStatusStyles = (variant: StatusVariant) => {
 // ============================================
 
 /**
- * StatusPill Component
+ * StatusPillSmall Component
+ * Smaller version of StatusPill for compact spaces like table cells
  * Displays status with colored dot and text in a pill-shaped container
- * Exact specifications from Figma with proper color backgrounds
  */
-export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
+export const StatusPillSmall = React.forwardRef<HTMLDivElement, StatusPillSmallProps>(
   ({ variant, label, className }, ref) => {
     const styles = getStatusStyles(variant);
 
@@ -86,11 +86,11 @@ export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '6px',
-          paddingLeft: '8px',
-          paddingRight: '12px',
-          paddingTop: '4px',
-          paddingBottom: '4px',
+          gap: '4px',
+          paddingLeft: '6px',
+          paddingRight: '8px',
+          paddingTop: '2px',
+          paddingBottom: '2px',
           backgroundColor: styles.backgroundColor,
           borderRadius: '999px',
         }}
@@ -98,8 +98,8 @@ export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
         {/* Status Dot */}
         <div
           style={{
-            width: '6px',
-            height: '6px',
+            width: '4px',
+            height: '4px',
             borderRadius: '50%',
             backgroundColor: styles.dotColor,
             flexShrink: 0,
@@ -110,8 +110,8 @@ export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
         <span
           style={{
             fontFamily: 'DM Sans',
-            fontSize: '14px',
-            lineHeight: '22px',
+            fontSize: '12px',
+            lineHeight: '18px',
             fontWeight: 500,
             color: styles.textColor,
             whiteSpace: 'nowrap',
@@ -124,4 +124,4 @@ export const StatusPill = React.forwardRef<HTMLDivElement, StatusPillProps>(
   }
 );
 
-StatusPill.displayName = 'StatusPill';
+StatusPillSmall.displayName = 'StatusPillSmall';
