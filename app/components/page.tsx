@@ -10,15 +10,21 @@ import { SectionHeader } from './SectionHeader';
 import { PerformanceCard } from './PerformanceCard';
 import { CostTrendChart } from './CostTrendChart';
 import { OptimizationRejectionsChart } from './OptimizationRejectionsChart';
+import { PieChart } from './PieChart';
+import { BudgetPlanningChart } from './BudgetPlanningChart';
+import { BudgetCard } from './BudgetCard';
+import { MonthlyInsightCard } from './MonthlyInsightCard';
 import { ExternalFactorsList } from './ExternalFactorsList';
 import { StatusPill } from './StatusPill';
 import { RegionalPerformanceTable } from './RegionalPerformanceTable';
 import { ProgressBar } from './ProgressBar';
 import { Input } from './Input';
 import { Modal } from './Modal';
+import { ExecutionCard } from './ExecutionCard';
+import { executionCardTestData } from './ExecutionCard.test';
 import { Cube, Factory, Package, GearSix } from '@phosphor-icons/react';
 
-type TabType = 'buttons' | 'topbar' | 'sidebar' | 'metrics' | 'section-headers' | 'performance-cards' | 'charts' | 'lists' | 'status-pills' | 'tables' | 'progress-bars' | 'inputs' | 'modals';
+type TabType = 'buttons' | 'topbar' | 'sidebar' | 'metrics' | 'section-headers' | 'performance-cards' | 'charts' | 'lists' | 'status-pills' | 'tables' | 'progress-bars' | 'inputs' | 'modals' | 'execution-cards';
 
 export default function ComponentsPage() {
   const [activeTab, setActiveTab] = useState<TabType>('section-headers');
@@ -211,6 +217,19 @@ export default function ComponentsPage() {
           >
             Modals
             {activeTab === 'modals' && (
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1C58F7]" />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('execution-cards')}
+            className={`px-[24px] py-[12px] text-[16px] font-semibold leading-[24px] transition-colors relative whitespace-nowrap ${
+              activeTab === 'execution-cards'
+                ? 'text-[#1C58F7]'
+                : 'text-[#7F8FA4] hover:text-[#17263D]'
+            }`}
+          >
+            Execution Cards
+            {activeTab === 'execution-cards' && (
               <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1C58F7]" />
             )}
           </button>
@@ -2505,6 +2524,610 @@ export default function ComponentsPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Pie Chart Section */}
+              <div className="flex flex-col gap-[24px] pt-[40px] border-t-[2px] border-[#E5E7EB]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Pie Chart
+                </h2>
+                <p className="text-[16px] text-[#7F8FA4] leading-[24px]">
+                  Reusable donut-style pie chart component with legend and interactive tooltips. Perfect for displaying percentage-based data breakdowns with custom colors.
+                </p>
+
+                {/* Chart Preview */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <PieChart
+                      data={[
+                        { label: 'Open Orders', value: 84250, percentage: 65.6, color: '#1C58F7' },
+                        { label: 'Seasonal', value: 32892, percentage: 25.0, color: '#A8C3FF' },
+                        { label: 'Safety', value: 12826, percentage: 9.4, color: '#E3ECFF' },
+                      ]}
+                      diameter={150}
+                      showLegend={true}
+                      showTooltip={true}
+                    />
+                  </div>
+                </div>
+
+                {/* Component Props Table */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Props
+                  </h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border border-[#E5E7EB] rounded-[8px]">
+                      <thead className="bg-[#F3F6F9]">
+                        <tr>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Prop</th>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Type</th>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Required</th>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white">
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">data</td>
+                          <td className="p-[12px] text-neutral-700">PieChartDataItem[]</td>
+                          <td className="p-[12px] text-neutral-700">Yes</td>
+                          <td className="p-[12px] text-neutral-700">Array of data items with label, value, percentage, and color</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">diameter</td>
+                          <td className="p-[12px] text-neutral-700">number</td>
+                          <td className="p-[12px] text-neutral-700">No</td>
+                          <td className="p-[12px] text-neutral-700">Chart diameter in pixels (default: 150)</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">showLegend</td>
+                          <td className="p-[12px] text-neutral-700">boolean</td>
+                          <td className="p-[12px] text-neutral-700">No</td>
+                          <td className="p-[12px] text-neutral-700">Show legend below chart (default: true)</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">showTooltip</td>
+                          <td className="p-[12px] text-neutral-700">boolean</td>
+                          <td className="p-[12px] text-neutral-700">No</td>
+                          <td className="p-[12px] text-neutral-700">Show tooltips on hover (default: true)</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">className</td>
+                          <td className="p-[12px] text-neutral-700">string</td>
+                          <td className="p-[12px] text-neutral-700">No</td>
+                          <td className="p-[12px] text-neutral-700">Additional className for custom styling</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Data Item Interface */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    PieChartDataItem Interface
+                  </h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border border-[#E5E7EB] rounded-[8px]">
+                      <thead className="bg-[#F3F6F9]">
+                        <tr>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Property</th>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Type</th>
+                          <th className="p-[12px] text-left text-[14px] font-semibold text-neutral-900">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white">
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">label</td>
+                          <td className="p-[12px] text-neutral-700">string</td>
+                          <td className="p-[12px] text-neutral-700">Display label for the segment</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">value</td>
+                          <td className="p-[12px] text-neutral-700">number</td>
+                          <td className="p-[12px] text-neutral-700">Numeric value (e.g., 84250 for tons)</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">percentage</td>
+                          <td className="p-[12px] text-neutral-700">number</td>
+                          <td className="p-[12px] text-neutral-700">Percentage as number (e.g., 65.6 for 65.6%)</td>
+                        </tr>
+                        <tr className="border-t border-[#E5E7EB]">
+                          <td className="p-[12px] font-mono text-[14px] text-[#1C58F7]">color</td>
+                          <td className="p-[12px] text-neutral-700">string</td>
+                          <td className="p-[12px] text-neutral-700">Hex color for the segment (e.g., '#1C58F7')</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Features List */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Features
+                  </h3>
+                  <ul className="list-disc list-inside space-y-[8px] text-[14px] text-neutral-700">
+                    <li>Donut-style pie chart with 50% inner radius for center cutout</li>
+                    <li>Configurable diameter (default 150px)</li>
+                    <li>Interactive hover tooltips showing label, percentage, and formatted value</li>
+                    <li>Legend below chart with colored dots and formatted text</li>
+                    <li>Custom colors for each segment via data props</li>
+                    <li>Automatic number formatting with commas (e.g., 84,250 Tons)</li>
+                    <li>Uses Recharts library for rendering</li>
+                    <li>All styling uses design tokens (COLORS, SPACING, TYPOGRAPHY)</li>
+                    <li>TypeScript support with full type definitions</li>
+                    <li>ForwardRef pattern for ref support</li>
+                  </ul>
+                </div>
+
+                {/* Color Specifications */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Example Colors (Target Inventory)
+                  </h3>
+                  <div className="grid grid-cols-3 gap-[12px]">
+                    <div className="flex items-center gap-[12px] p-[12px] bg-[#F3F6F9] rounded-[8px]">
+                      <div className="w-[40px] h-[40px] rounded-[4px] bg-[#1C58F7]" />
+                      <div>
+                        <p className="text-[14px] font-semibold text-neutral-900">Open Orders</p>
+                        <p className="text-[12px] text-neutral-600">#1C58F7</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-[12px] p-[12px] bg-[#F3F6F9] rounded-[8px]">
+                      <div className="w-[40px] h-[40px] rounded-[4px] bg-[#A8C3FF]" />
+                      <div>
+                        <p className="text-[14px] font-semibold text-neutral-900">Seasonal</p>
+                        <p className="text-[12px] text-neutral-600">#A8C3FF</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-[12px] p-[12px] bg-[#F3F6F9] rounded-[8px]">
+                      <div className="w-[40px] h-[40px] rounded-[4px] bg-[#E3ECFF]" />
+                      <div>
+                        <p className="text-[14px] font-semibold text-neutral-900">Safety</p>
+                        <p className="text-[12px] text-neutral-600">#E3ECFF</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Usage Example */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Usage Example
+                  </h3>
+                  <div className="bg-[#F3F6F9] rounded-[8px] p-[20px] font-mono text-[14px] overflow-x-auto">
+                    <pre className="text-neutral-900">{`<PieChart
+  data={[
+    { label: 'Open Orders', value: 84250, percentage: 65.6, color: '#1C58F7' },
+    { label: 'Seasonal', value: 32892, percentage: 25.0, color: '#A8C3FF' },
+    { label: 'Safety', value: 12826, percentage: 9.4, color: '#E3ECFF' },
+  ]}
+  diameter={150}
+  showLegend={true}
+  showTooltip={true}
+/>`}</pre>
+                  </div>
+                </div>
+              </div>
+
+              {/* Budget Planning Chart Section */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Budget Planning Chart
+                </h2>
+                <p className="text-[16px] text-[#7F8FA4] leading-[24px]">
+                  Grouped vertical bar chart for Budget Planning section. Displays quarterly forecast vs budget data with interactive tooltips and legend.
+                </p>
+
+                {/* Chart Preview */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <BudgetPlanningChart
+                      data={[
+                        { quarter: 'Q1 2026', forecast: 54000, budget: 50000 },
+                        { quarter: 'Q2 2026', forecast: 61000, budget: 57000 },
+                        { quarter: 'Q3 2026', forecast: 71000, budget: 68000 },
+                        { quarter: 'Q4 2026', forecast: 57000, budget: 56000 },
+                      ]}
+                      width={1132}
+                      height={268}
+                    />
+                  </div>
+                </div>
+
+                {/* Specifications Table */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Specifications
+                  </h3>
+                  <div className="overflow-hidden rounded-[16px] border border-[#E5E7EB]">
+                    <table className="w-full">
+                      <thead className="bg-[#F3F6F9]">
+                        <tr>
+                          <th className="text-left p-[16px] text-[14px] font-medium text-[#7F8FA4]">
+                            Property
+                          </th>
+                          <th className="text-left p-[16px] text-[14px] font-medium text-[#7F8FA4]">
+                            Value
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-[#E5E7EB]">
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Chart Width</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">1132px (default)</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Chart Height</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">268px (default)</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Bar Width</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">80px</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Bar Gap</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">8px</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Forecast Color</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">#9db8ff</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Budget Color</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">#1339a0</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Y-Axis Range</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">0 - 80,000 (20,000 intervals)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Usage Example */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Usage Example
+                  </h3>
+                  <div className="bg-[#F3F6F9] rounded-[8px] p-[20px] font-mono text-[14px] overflow-x-auto">
+                    <pre className="text-neutral-900">{`<BudgetPlanningChart
+  data={[
+    { quarter: 'Q1 2026', forecast: 54000, budget: 50000 },
+    { quarter: 'Q2 2026', forecast: 61000, budget: 57000 },
+    { quarter: 'Q3 2026', forecast: 71000, budget: 68000 },
+    { quarter: 'Q4 2026', forecast: 57000, budget: 56000 },
+  ]}
+  width={1132}
+  height={268}
+  showLegend={true}
+  showTooltip={true}
+/>`}</pre>
+                  </div>
+                </div>
+              </div>
+
+              {/* Budget Card Section */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Budget Card
+                </h2>
+                <p className="text-[16px] text-[#7F8FA4] leading-[24px]">
+                  Metric card variant for Budget Planning section. Features gradient text, optional tag, smart percentage highlighting, and vertical indicator line. Optimized for 3-column layouts.
+                </p>
+
+                {/* Card Previews */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview - Total Forecast Card
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <BudgetCard
+                      icon="trending-up"
+                      title="Total Forecast"
+                      tag="FY2026"
+                      value="254,000 Tons"
+                      insight="+5.8% vs. previous year"
+                      highlightInsight={true}
+                    />
+                  </div>
+
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview - Budget Target Card
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <BudgetCard
+                      icon="target"
+                      title="Budget Target"
+                      value="249,000 Tons"
+                      insight="+3.7% vs. previous year"
+                      highlightInsight={true}
+                    />
+                  </div>
+
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview - Variance Card
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <BudgetCard
+                      icon="trending-down"
+                      title="Variance"
+                      value="+5,000 Tons"
+                      insight="2.0% above budget"
+                      showIndicatorLine={true}
+                    />
+                  </div>
+
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview - 3 Cards in Row Layout
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                      <BudgetCard
+                        icon="trending-up"
+                        title="Total Forecast"
+                        tag="FY2026"
+                        value="254,000 Tons"
+                        insight="+5.8% vs. previous year"
+                        highlightInsight={true}
+                      />
+                      <BudgetCard
+                        icon="target"
+                        title="Budget Target"
+                        value="249,000 Tons"
+                        insight="+3.7% vs. previous year"
+                        highlightInsight={true}
+                      />
+                      <BudgetCard
+                        icon="trending-down"
+                        title="Variance"
+                        value="+5,000 Tons"
+                        insight="2.0% above budget"
+                        showIndicatorLine={true}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Specifications Table */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Specifications
+                  </h3>
+                  <div className="overflow-hidden rounded-[16px] border border-[#E5E7EB]">
+                    <table className="w-full">
+                      <thead className="bg-[#F3F6F9]">
+                        <tr>
+                          <th className="text-left p-[16px] text-[14px] font-medium text-[#7F8FA4]">
+                            Property
+                          </th>
+                          <th className="text-left p-[16px] text-[14px] font-medium text-[#7F8FA4]">
+                            Value
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-[#E5E7EB]">
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Width</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">356px</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Background</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">#f3f6f9</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Border Radius</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">16px (CARD_CURVATURE)</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Padding</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">16px (SPACING[16])</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Value Gradient</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">#1C58F7 to #34C759</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Icon Size</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">20×20px</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Icon Color</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">#1339a0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Usage Example */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Usage Example
+                  </h3>
+                  <div className="bg-[#F3F6F9] rounded-[8px] p-[20px] font-mono text-[14px] overflow-x-auto">
+                    <pre className="text-neutral-900">{`<BudgetCard
+  icon="trending-up"
+  title="Total Forecast"
+  tag="FY2026"
+  value="254,000 Tons"
+  insight="+5.8% vs. previous year"
+  highlightInsight={true}
+/>
+
+<BudgetCard
+  icon="target"
+  title="Budget Target"
+  value="249,000 Tons"
+  insight="+3.7% vs. previous year"
+  highlightInsight={true}
+/>
+
+<BudgetCard
+  icon="trending-down"
+  title="Variance"
+  value="+5,000 Tons"
+  insight="2.0% above budget"
+  showIndicatorLine={true}
+/>`}</pre>
+                  </div>
+                </div>
+              </div>
+
+              {/* Monthly Insight Card Section */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Monthly Insight Card
+                </h2>
+                <p className="text-[16px] text-[#7F8FA4] leading-[24px]">
+                  Complex metric card designed for monthly target inventory insights. Displays month, status, alert count, main metric value, coverage ratio, progress bar, and actionable description. Used in the Monthly Applications & Insights section.
+                </p>
+
+                {/* Card Preview */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview - Warning State
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <MonthlyInsightCard
+                      month="July"
+                      isCurrent={true}
+                      alertText="1 Alert"
+                      status="warning"
+                      eyebrow="Target vs Current"
+                      value="-2,049 Tons"
+                      coverageRatio="0.7X"
+                      progressPercentage={83}
+                      progressText="83% 9,752/11,801 Tons"
+                      description="Monitor weekly and prepare backup supply"
+                    />
+                  </div>
+
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Preview - Good State
+                  </h3>
+                  <div className="bg-white rounded-[16px] p-[24px] border border-[#E5E7EB]">
+                    <MonthlyInsightCard
+                      month="October"
+                      isCurrent={false}
+                      status="success"
+                      eyebrow="Target vs Projected"
+                      value="+1,663 Tons"
+                      coverageRatio="1.2X"
+                      progressPercentage={120}
+                      progressText="120% 9,867/8,204 Tons"
+                      description="Continue current operation"
+                    />
+                  </div>
+                </div>
+
+                {/* Specifications Table */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Specifications
+                  </h3>
+                  <div className="overflow-hidden rounded-[16px] border border-[#E5E7EB]">
+                    <table className="w-full">
+                      <thead className="bg-[#F3F6F9]">
+                        <tr>
+                          <th className="text-left p-[16px] text-[14px] font-medium text-[#7F8FA4]">
+                            Property
+                          </th>
+                          <th className="text-left p-[16px] text-[14px] font-medium text-[#7F8FA4]">
+                            Value
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-[#E5E7EB]">
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Width</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">365px</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Background</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">#f3f6f9 (COLORS.neutral[100])</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Border Radius</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">16px (CARD_CURVATURE)</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Padding</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">16px (SPACING[16])</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Header Font</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">16px DM Sans SemiBold</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Main Value Font</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">24px DM Sans SemiBold, #1c58f7</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Coverage Ratio</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">Green (&gt;=1.0X), Red (&lt;1.0X)</td>
+                        </tr>
+                        <tr>
+                          <td className="p-[16px] text-[14px] text-[#17263D]">Progress Bar</td>
+                          <td className="p-[16px] text-[14px] text-[#7F8FA4]">6px height, green fill, gray/light-green background</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Data Structure */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Props Interface
+                  </h3>
+                  <div className="bg-[#17263D] rounded-[16px] p-[24px] overflow-x-auto">
+                    <pre className="text-[14px] text-[#D9E0E9] font-mono leading-[22px]">{`export interface MonthlyInsightCardProps {
+  month: string;                  // Month name
+  isCurrent?: boolean;            // Show "(Current)" suffix
+  alertText?: string;             // e.g., "1 Alert", "2 Alerts"
+  status: 'warning' | 'success' | 'error' | 'info';
+  eyebrow: string;                // e.g., "Target vs Current"
+  value: string;                  // e.g., "-2,049 Tons"
+  coverageRatio: string;          // e.g., "0.7X", "1.2X"
+  progressPercentage: number;     // 0-200
+  progressText: string;           // e.g., "83% 9,752/11,801 Tons"
+  description: string;            // Footer action text
+  className?: string;
+}`}</pre>
+                  </div>
+                </div>
+
+                {/* Usage Example */}
+                <div className="flex flex-col gap-[20px]">
+                  <h3 className="text-[16px] font-medium text-[#7F8FA4] leading-[24px]">
+                    Usage Example
+                  </h3>
+                  <div className="bg-[#17263D] rounded-[16px] p-[24px] overflow-x-auto">
+                    <pre className="text-[14px] text-[#D9E0E9] font-mono leading-[22px]">{`import { MonthlyInsightCard } from './components/MonthlyInsightCard';
+
+<MonthlyInsightCard
+  month="July"
+  isCurrent={true}
+  alertText="1 Alert"
+  status="warning"
+  eyebrow="Target vs Current"
+  value="-2,049 Tons"
+  coverageRatio="0.7X"
+  progressPercentage={83}
+  progressText="83% 9,752/11,801 Tons"
+  description="Monitor weekly and prepare backup supply"
+/>`}</pre>
+                  </div>
+                </div>
+              </div>
             </>
           )}
 
@@ -3365,7 +3988,7 @@ export default function ComponentsPage() {
                       </tr>
                       <tr className="border-t border-[#D9E0E9]">
                         <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">onSettingsClick</td>
-                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">() => void</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">() =&gt; void</td>
                         <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Settings click handler</td>
                       </tr>
                       <tr className="border-t border-[#D9E0E9]">
@@ -3697,7 +4320,7 @@ export default function ComponentsPage() {
                       </tr>
                       <tr className="border-t border-[#D9E0E9]">
                         <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">onClose</td>
-                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">() => void</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">() =&gt; void</td>
                         <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Close handler function</td>
                       </tr>
                       <tr className="border-t border-[#D9E0E9]">
@@ -3832,5 +4455,260 @@ function ModalExample() {
         </div>
       </Modal>
     </>
+          )}
+
+          {/* Execution Cards Tab */}
+          {activeTab === 'execution-cards' && (
+            <>
+              {/* Execution Card Examples Section */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Execution Card Component
+                </h2>
+
+                <div className="flex flex-col gap-[16px]">
+                  <p className="text-[14px] text-[#7F8FA4] leading-[22px]">
+                    Enhanced action cards for distribution planning with multiple solution options and status tracking. Features:
+                  </p>
+                  <ul className="list-disc list-inside text-[14px] text-[#7F8FA4] leading-[22px] pl-[8px]">
+                    <li>Status badges (Critical, Warning, Completed)</li>
+                    <li>Expandable/collapsible action options</li>
+                    <li>Multiple solution cards with recommendation badges</li>
+                    <li>Metadata display (cost, delivery time, impact)</li>
+                    <li>Quick action buttons for collapsed state</li>
+                    <li>Responsive grid layout for action options</li>
+                    <li>Full keyboard navigation and accessibility</li>
+                  </ul>
+                </div>
+
+                {/* Card Examples */}
+                <div className="space-y-6">
+                  {executionCardTestData.map((cardData) => (
+                    <ExecutionCard key={cardData.id} {...cardData} />
+                  ))}
+                </div>
+              </div>
+
+              {/* Execution Card Specifications */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Specifications
+                </h2>
+
+                <div className="border border-[#D9E0E9] rounded-[12px] overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-[#F3F6F9]">
+                      <tr>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Property</th>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Value</th>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">border-radius</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">16px</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">CARD_CURVATURE token</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">padding</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">24px</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Card internal padding</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">background</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#ffffff</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.neutral[0]</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">shadow</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">shadow-sm</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Subtle elevation with hover effect</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">icon-size</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">40px</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Alert icon circle diameter</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">icon-background</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#eaf1ff</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.accent[100]</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">status-critical-bg</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#FFD6DB</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.semantic.error[100]</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">status-critical-text</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#FF3B30</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.semantic.error[500]</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">status-warning-bg</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#FFF5CC</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.semantic.warning[100]</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">status-warning-text</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#C9A700</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.semantic.warning[500]</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">option-card-bg</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">#f9fafb</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">COLORS.neutral[50] for action options</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">option-card-radius</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">12px</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">BORDER_RADIUS.md</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">grid-columns</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">2 cols desktop, 1 col mobile</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Responsive action options layout</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Code Example */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Usage Example
+                </h2>
+
+                <div className="bg-[#17263D] rounded-[12px] p-[24px] overflow-x-auto">
+                  <pre className="text-[13px] text-[#f9fafb] leading-[20px] font-mono">
+{`<ExecutionCard
+  id={1}
+  title="Critical Shortage Risk — Houston Terminal"
+  status="critical"
+  statusLabel="Critical"
+  description="Current inventory at 45% capacity..."
+  dueDate="7/9/2025"
+  potentialSavings="$125,000"
+  actionOptionsCount={2}
+  defaultExpanded={true}
+  actionOptions={[
+    {
+      id: "option1",
+      title: "Emergency Transfer",
+      recommended: true,
+      description: "Transfer 3,000 tons...",
+      cost: "$15,000",
+      delivery: "2-3 days",
+      impact: "Complete resolution",
+      buttonVariant: "primary"
+    }
+  ]}
+  quickActions={[
+    {
+      id: "execute",
+      label: "Execute Recommended",
+      icon: "check",
+      variant: "primary"
+    }
+  ]}
+/>`}
+                  </pre>
+                </div>
+              </div>
+
+              {/* Props Documentation */}
+              <div className="flex flex-col gap-[24px]">
+                <h2 className="text-[24px] font-semibold text-[#17263D] leading-[30px]">
+                  Props
+                </h2>
+
+                <div className="border border-[#D9E0E9] rounded-[12px] overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-[#F3F6F9]">
+                      <tr>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Prop</th>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Type</th>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Required</th>
+                        <th className="px-[16px] py-[12px] text-left text-[14px] font-semibold text-[#17263D]">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">id</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">number | string</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Unique identifier for the card</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">title</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">string</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Card title/heading</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">status</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">'critical' | 'warning' | 'completed'</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Status type for badge styling</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">statusLabel</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">string</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Text displayed in status badge</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">description</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">string</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Main card description text</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">dueDate</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">string</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Due date string (e.g., "7/9/2025")</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">potentialSavings</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">string</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Potential savings amount</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">actionOptionsCount</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">number</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Yes</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Number of available action options</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">defaultExpanded</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">boolean</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">No</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Initial expanded state (default: false)</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">actionOptions</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">ActionOption[]</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">No</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Array of action option objects</td>
+                      </tr>
+                      <tr className="border-t border-[#D9E0E9]">
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">quickActions</td>
+                        <td className="px-[16px] py-[12px] text-[14px] font-mono text-[#7F8FA4]">QuickAction[]</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">No</td>
+                        <td className="px-[16px] py-[12px] text-[14px] text-[#7F8FA4]">Quick action buttons for collapsed state</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

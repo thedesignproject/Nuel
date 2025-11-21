@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from '@phosphor-icons/react';
 
 // ============================================
@@ -123,15 +124,16 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <div
       ref={backdropRef}
       onClick={handleBackdropClick}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 flex items-center justify-center p-4"
       style={{
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
         backdropFilter: 'blur(8px)',
         animation: 'fadeIn 250ms ease-out',
+        zIndex: 999999,
       }}
       role="dialog"
       aria-modal="true"
@@ -317,4 +319,11 @@ export const Modal: React.FC<ModalProps> = ({
       `}</style>
     </div>
   );
+
+  // Render modal using portal to ensure it appears above all other content
+  if (typeof document !== 'undefined') {
+    return createPortal(modalContent, document.body);
+  }
+
+  return null;
 };

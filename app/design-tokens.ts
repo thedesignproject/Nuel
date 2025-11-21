@@ -65,10 +65,18 @@ export const COLORS = {
   // Backgrounds
   neutral: {
     0: '#ffffff',
+    50: '#f9fafb', // Near-white for icons
   },
   accent: {
     100: '#eaf1ff', // Light blue for icon backgrounds
     500: '#1c58f7', // Primary blue for values
+  },
+
+  // Primary color scale (for forecast cards)
+  primary: {
+    300: '#9eadcc', // Gray-purple for icons
+    500: '#365ec8', // Blue for icons and bullets
+    900: '#070d15', // Dark/black for icons
   },
 
   // Text colors
