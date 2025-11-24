@@ -9,6 +9,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { StatusPill } from '../components/StatusPill';
 import { Button } from '../components/Button';
 import { NotificationsPanel } from '../components/NotificationsPanel';
+import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING, TYPOGRAPHY, COLORS, BORDER_RADIUS } from '../design-tokens';
 import { neutral, primary, gradients } from '../../lib/design-tokens/colors';
 
@@ -292,6 +293,7 @@ const getDeliveryStatusLabel = (status: OrderRow['deliveryStatus']): string => {
 export default function OrdersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
@@ -315,6 +317,7 @@ export default function OrdersPage() {
             variant="expanded"
             activeItem="orders"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

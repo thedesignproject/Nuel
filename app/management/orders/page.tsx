@@ -7,6 +7,7 @@ import { SectionHeader } from '../../components/SectionHeader';
 import { Button } from '../../components/Button';
 import { StatusPill } from '../../components/StatusPill';
 import { NotificationsPanel } from '../../components/NotificationsPanel';
+import { useAuth } from '../../context/AuthContext';
 import { LAYOUT_SPACING, TYPOGRAPHY, COLORS, BORDER_RADIUS } from '../../design-tokens';
 import { neutral, primary, gradients } from '../../../lib/design-tokens/colors';
 import { MagnifyingGlass, FunnelSimple, PencilLine, House, BuildingOffice } from '@phosphor-icons/react';
@@ -229,6 +230,7 @@ const ORDERS_DATA: OrderRow[] = [
 export default function ManagementOrdersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
 
   // Filter orders based on search query
   const filteredOrders = ORDERS_DATA.filter((order) => {
@@ -306,6 +308,7 @@ export default function ManagementOrdersPage() {
             variant="expanded"
             activeItem="orders"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

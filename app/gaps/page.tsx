@@ -6,10 +6,12 @@ import { Sidebar } from '../components/Sidebar';
 import { NotificationsPanel } from '../components/NotificationsPanel';
 import { MetricCard } from '../components/MetricCard';
 import { UntappedPotentialTable } from '../components/UntappedPotentialTable';
+import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING } from '../design-tokens';
 
 export default function GapsPage() {
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
@@ -33,6 +35,7 @@ export default function GapsPage() {
             variant="expanded"
             activeItem="gaps"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

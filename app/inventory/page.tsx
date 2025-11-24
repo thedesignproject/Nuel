@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { TopBar } from '../components/TopBar';
 import { Sidebar } from '../components/Sidebar';
 import { NotificationsPanel } from '../components/NotificationsPanel';
+import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING } from '../design-tokens';
 
 export default function InventoryPage() {
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
@@ -31,6 +33,7 @@ export default function InventoryPage() {
             variant="expanded"
             activeItem="inventory"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

@@ -19,11 +19,13 @@ import { StatusPill } from '../components/StatusPill';
 import { BudgetPlanningChart } from '../components/BudgetPlanningChart';
 import { BudgetCard } from '../components/BudgetCard';
 import { ExecutionCard } from '../components/ExecutionCard';
+import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING, COLORS, TYPOGRAPHY, SPACING } from '../design-tokens';
 
 export default function ForecastPage() {
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
   const [activeTabId, setActiveTabId] = useState('forecast-vs-actuals');
+  const { logout } = useAuth();
 
   // Define tabs
   const tabs: Tab[] = [
@@ -56,6 +58,7 @@ export default function ForecastPage() {
             variant="expanded"
             activeItem="forecast"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

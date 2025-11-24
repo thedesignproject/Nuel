@@ -5,10 +5,12 @@ import { TopBar } from '../../components/TopBar';
 import { Sidebar } from '../../components/Sidebar';
 import { NotificationsPanel } from '../../components/NotificationsPanel';
 import { FileUploadPanel } from '../../components/FileUploadPanel';
+import { useAuth } from '../../context/AuthContext';
 import { LAYOUT_SPACING } from '../../design-tokens';
 
 export default function ManagementDataHubPage() {
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
 
   const handleFileUpload = (file: File) => {
     console.log('File uploaded:', file.name);
@@ -47,6 +49,7 @@ export default function ManagementDataHubPage() {
             variant="expanded"
             activeItem="data-hub"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

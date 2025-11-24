@@ -368,8 +368,8 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
               </div>
 
               {/* Settings Link */}
-              <button
-                onClick={onSettings}
+              <Link
+                href="/settings"
                 className={cn(
                   'flex items-center justify-start h-[38px] px-[6px] py-[8px] rounded-[8px] hover:bg-[#1C2B42] transition-colors'
                 )}
@@ -384,7 +384,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                     Settings
                   </p>
                 )}
-              </button>
+              </Link>
 
               {/* Logout Link */}
               <button

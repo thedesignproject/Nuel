@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TopBar } from '../components/TopBar';
 import { Sidebar } from '../components/Sidebar';
 import { NotificationsPanel } from '../components/NotificationsPanel';
+import { useAuth } from '../context/AuthContext';
 import { ActivityAlertWidget } from '../components/ActivityAlertWidget';
 import { MetricCard } from '../components/MetricCard';
 import { KPICard } from '../components/KPICard';
@@ -20,6 +21,7 @@ import { LAYOUT_SPACING } from '../design-tokens';
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState(0); // 0 = Grid View, 1 = Table View
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
       {/* Grid Background */}
@@ -42,6 +44,7 @@ export default function DashboardPage() {
             variant="expanded"
             activeItem="dashboard"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 

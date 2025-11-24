@@ -3,9 +3,11 @@
 import { TopBar } from '../components/TopBar';
 import { Sidebar } from '../components/Sidebar';
 import { FileUploadPanel } from '../components/FileUploadPanel';
+import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING } from '../design-tokens';
 
 export default function DataHubPage() {
+  const { logout } = useAuth();
   const handleFileUpload = (file: File) => {
     console.log('File uploaded:', file.name);
     // Handle file upload logic here
@@ -38,7 +40,7 @@ export default function DataHubPage() {
       <div className="relative z-10 flex h-screen overflow-hidden">
         {/* Sidebar - Sticky */}
         <div className="h-screen sticky top-0 z-30" style={{ padding: LAYOUT_SPACING.pageEdge }}>
-          <Sidebar mode="executive" variant="expanded" activeItem="data-hub" />
+          <Sidebar mode="executive" variant="expanded" activeItem="data-hub" onLogout={logout} />
         </div>
 
         {/* Main Content Area */}

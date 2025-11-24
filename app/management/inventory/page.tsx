@@ -8,10 +8,12 @@ import { InventoryAlerts } from '../../components/InventoryAlerts';
 import { InventoryMap } from '../../components/InventoryMap';
 import { RegionalTargets } from '../../components/RegionalTargets';
 import { InventoryDetailsTable } from '../../components/InventoryDetailsTable';
+import { useAuth } from '../../context/AuthContext';
 import { LAYOUT_SPACING } from '../../design-tokens';
 
 export default function ManagementInventoryPage() {
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="min-h-screen relative bg-[#E8F3FF]">
@@ -35,6 +37,7 @@ export default function ManagementInventoryPage() {
             variant="expanded"
             activeItem="inventory"
             onNotificationsClick={() => setIsNotificationsPanelOpen(true)}
+            onLogout={logout}
           />
         </div>
 
