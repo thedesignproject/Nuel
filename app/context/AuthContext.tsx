@@ -1,0 +1,167 @@
+'use client';
+
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+
+// ============================================
+// AUTH CONTEXT TYPES
+// ============================================
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: User | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+}
+
+interface User {
+  email: string;
+  name: string;
+}
+
+// ============================================
+// AUTH CONTEXT
+// ============================================
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Public routes that don't require authentication
+const publicRoutes = ['/signin', '/signup', '/forgot-password'];
+
+// ============================================
+// AUTH PROVIDER
+// ============================================
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+
+  // Check authentication status on mount
+  useEffect(() => {
+    const checkAuth = () => {
+      const authStatus = localStorage.getItem('isAuthenticated');
+      const userEmail = localStorage.getItem('userEmail');
+
+      if (authStatus === 'true') {
+        setIsAuthenticated(true);
+        setUser({
+          email: userEmail || 'user@nuel.com',
+          name: 'John Doe RM',
+        });
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  // Handle route protection
+  useEffect(() => {
+    if (isLoading) return;
+
+    const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route));
+
+    if (!isAuthenticated && !isPublicRoute) {
+      // Redirect to sign in if trying to access protected route
+      router.push('/signin');
+    } else if (isAuthenticated && pathname === '/signin') {
+      // Redirect to dashboard if already authenticated and trying to access sign in
+      router.push('/');
+    }
+  }, [isAuthenticated, isLoading, pathname, router]);
+
+  // Login function
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      // Simulate API call (replace with actual auth logic)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // For demo, accept any credentials
+      // In production, validate against your auth service
+      if (email && password) {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userEmail', email);
+        setIsAuthenticated(true);
+        setUser({
+          email,
+          name: 'John Doe RM',
+        });
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
+  // Logout function
+  const logout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userEmail');
+    setIsAuthenticated(false);
+    setUser(null);
+    router.push('/signin');
+  };
+
+  // Show nothing while checking auth status (prevents flash)
+  if (isLoading) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: '#F3F6F9' }}
+      >
+        <div className="animate-pulse">
+          <svg
+            width="134"
+            height="88"
+            viewBox="0 0 134 88"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M29.6132 32.4456C30.9038 32.7023 32.097 33.0513 33.2579 33.678C36.3695 35.3583 38.3779 38.6191 38.6128 42.149L38.609 55.5535H31.7911V42.2479C31.7911 41.0868 30.0772 39.2648 28.903 39.2648H22.3218V55.5544H15.5039V39.1697L15.591 38.9804L22.0377 38.9605V32.5587L22.2262 32.4456H29.6122H29.6132Z"
+              fill="#17263D"
+            />
+            <path
+              d="M49.8349 32.4465L50.0243 32.5119L50.0195 45.429C50.3917 48.1611 52.2666 48.6087 54.7078 48.5708C56.9094 48.5366 58.8004 48.0132 59.1195 45.5124L59.1148 32.5613L59.3042 32.4465H66.1221V46.0928C65.7367 50.2531 62.8069 53.9335 58.7777 55.1075C56.685 55.7173 52.3064 55.704 50.2174 55.062C46.229 53.8377 43.3389 50.1516 43.0132 46.0027L43.017 32.4456H49.8349V32.4465Z"
+              fill="#17263D"
+            />
+            <path
+              d="M93.6309 32.4456L93.612 40.7131L89.1441 45.231H79.6509L85.4129 39.2648H80.2649C79.3137 39.2648 77.9932 40.5162 77.6512 41.3787C77.2668 42.3477 77.2441 45.4288 77.5681 46.4197C77.8921 47.4106 79.2362 48.7352 80.2649 48.7352H93.6309V55.5544H79.6037C78.2917 55.5544 75.7167 54.3125 74.6521 53.5109C70.9031 50.6856 70.307 46.6042 70.5791 42.1499C70.8379 37.922 73.7331 34.1411 77.7655 32.8763L79.5565 32.4465H93.6309V32.4456Z"
+              fill="#17263D"
+            />
+            <path
+              d="M104.986 32.4456L105.179 32.5112L105.178 45.8246C105.451 47.2708 106.643 48.389 108.143 48.5421H118.008L118.125 48.7323V55.5506L107.543 55.5544C102.617 55.1228 98.592 51.2177 98.0327 46.4113L98.0308 32.4456H104.986Z"
+              fill="#17263D"
+            />
+          </svg>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+// ============================================
+// USE AUTH HOOK
+// ============================================
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
