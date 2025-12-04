@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { TopBar } from '../components/TopBar';
 import { Sidebar } from '../components/Sidebar';
 import { NotificationsPanel } from '../components/NotificationsPanel';
+import { InventoryAlerts } from '../components/InventoryAlerts';
+import { InventoryMap } from '../components/InventoryMap';
+import { RegionalTargets } from '../components/RegionalTargets';
+import { InventoryDetailsTable } from '../components/InventoryDetailsTable';
 import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING } from '../design-tokens';
 
@@ -58,31 +62,24 @@ export default function InventoryPage() {
             </div>
 
             {/* Page Content */}
-            <div className="flex flex-col gap-[24px]">
-              {/* Content Area - Coming Soon */}
+            <div className="flex flex-col gap-[24px]" style={{ overflowX: 'hidden' }}>
+              {/* Inventory Alerts and Map Section */}
               <div
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '24px',
-                  padding: '48px',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '400px',
+                  gap: '16px',
+                  width: '100%',
                 }}
               >
-                <p
-                  style={{
-                    fontFamily: 'DM Sans',
-                    fontSize: '16px',
-                    lineHeight: '24px',
-                    fontWeight: 400,
-                    color: '#7F8FA4',
-                  }}
-                >
-                  Executive Inventory content coming soon
-                </p>
+                <InventoryAlerts />
+                <InventoryMap />
               </div>
+
+              {/* Regional Targets Section */}
+              <RegionalTargets />
+
+              {/* Inventory Details Table Section */}
+              <InventoryDetailsTable />
             </div>
           </div>
         </div>

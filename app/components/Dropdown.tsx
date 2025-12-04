@@ -91,7 +91,7 @@ export const Dropdown = React.forwardRef<HTMLDivElement, DropdownProps>(
           >
             <span
               className={cn(
-                'flex-1 text-[14px] leading-[22px] font-normal text-left',
+                'flex-1 text-[14px] leading-[22px] font-normal text-left truncate',
                 isPrimary ? 'text-[#F9FAFB]' : 'text-[#1339A0]'
               )}
             >
