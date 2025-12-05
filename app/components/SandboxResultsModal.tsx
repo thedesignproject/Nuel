@@ -75,11 +75,11 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
         };
       case 'warning':
         return {
-          bgColor: '#FEF3C7',
-          borderColor: '#F59E0B',
-          titleColor: '#D97706',
-          textColor: '#92400E',
-          icon: <Warning size={14} weight="fill" color="#D97706" />,
+          bgColor: COLORS.semantic.warning[50],
+          borderColor: COLORS.semantic.warning[400],
+          titleColor: COLORS.text.heading,
+          textColor: COLORS.text.muted,
+          icon: <Warning size={14} weight="fill" color={COLORS.text.heading} />,
           title: 'Capacity Assessment: CAUTION',
           message: 'Demand can be met, but some facilities will operate at maximum capacity.',
         };
