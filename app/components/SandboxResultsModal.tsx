@@ -269,7 +269,7 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                     fontFamily: 'DM Sans',
                     fontSize: '12px',
                     color: COLORS.text.secondary,
-                    margin: 0,
+                    margin: '0 0 12px 0',
                     lineHeight: '18px',
                   }}
                 >
@@ -277,6 +277,135 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                     ? 'Projected savings from reduced operations'
                     : 'Incremental cost to execute this scenario'}
                 </p>
+
+                {/* Cost Breakdown Indicators */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '6px',
+                    padding: '12px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(59, 130, 246, 0.2)',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ fontFamily: 'DM Sans', fontSize: '10px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Cost Breakdown
+                    </span>
+                  </div>
+
+                  {results.scenarioType === 'Peak Demand' || results.scenarioType === 'Seasonal Spike' ? (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#3B82F6' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Increased Production
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          ${Math.round(costDifference * 0.45).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#8B5CF6' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Logistics & Distribution
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          ${Math.round(costDifference * 0.30).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Inventory Holding
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          ${Math.round(costDifference * 0.25).toLocaleString()}
+                        </span>
+                      </div>
+                    </>
+                  ) : results.scenarioType === 'Planned Shutdown' || results.scenarioType === 'Planned Maintenance' ? (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#EF4444' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Lost Production Time
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          ${Math.round(costDifference * 0.40).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Reallocation to Other Plants
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          ${Math.round(costDifference * 0.35).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#8B5CF6' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Expedited Shipping
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          ${Math.round(costDifference * 0.25).toLocaleString()}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Reduced Production Costs
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          -${Math.round(costDifference * 0.50).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Lower Distribution Expenses
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          -${Math.round(costDifference * 0.30).toLocaleString()}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
+                            Inventory Optimization
+                          </span>
+                        </div>
+                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
+                          -${Math.round(costDifference * 0.20).toLocaleString()}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             )}
 
@@ -511,7 +640,7 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                       letterSpacing: '0.5px',
                     }}
                   >
-                    Optimal Timing
+                    Revisit Schedule
                   </h4>
                   <p
                     style={{
@@ -532,7 +661,7 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                       margin: 0,
                     }}
                   >
-                    Recommended to minimize disruption
+                    Revisit schedule within this date
                   </p>
                 </div>
               </div>

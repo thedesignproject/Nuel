@@ -34,6 +34,7 @@ export const SPACING = {
   12: '12px',
   16: '16px',
   24: '24px',
+  32: '32px',
 } as const;
 
 /**
@@ -65,17 +66,21 @@ export const COLORS = {
   // Backgrounds
   neutral: {
     0: '#ffffff',
-    50: '#f9fafb', // Near-white for icons
+    50: '#f9fafb', // Near-white
+    100: '#f3f4f6',
+    200: '#f3f6f9', // Light gray background
   },
   accent: {
-    100: '#eaf1ff', // Light blue for icon backgrounds
-    500: '#1c58f7', // Primary blue for values
+    100: '#eaf0fc', // Light blue backgrounds
+    200: '#eaf1ff',
+    500: '#1c58f7', // Primary blue
   },
 
   // Primary color scale (for forecast cards)
   primary: {
     300: '#9eadcc', // Gray-purple for icons
     500: '#365ec8', // Blue for icons and bullets
+    700: '#1339a0', // Darker blue
     900: '#070d15', // Dark/black for icons
   },
 
@@ -83,19 +88,27 @@ export const COLORS = {
   text: {
     primary: '#17263d',
     secondary: '#7f8fa4',
+    tertiary: '#2b3649',
+    dark: '#0a111b',
+    muted: '#717182',
+    heading: '#2b3649',
   },
 
   // Semantic colors
   semantic: {
     success: {
       500: '#34c759',
+      600: '#34c759',
     },
     error: {
       100: '#FFD6DB',
       500: '#FF3B30',
     },
     warning: {
+      50: 'rgba(255, 245, 204, 0.31)', // Light yellow with opacity
       100: '#FFF5CC',
+      300: '#FFE066',
+      400: '#FFD400',
       500: '#C9A700',
     },
     info: {
@@ -106,7 +119,14 @@ export const COLORS = {
 
   // Borders
   border: {
+    default: '#d9e0e9',
     subtle: '#d9e0e9',
+  },
+
+  // Gradients
+  gradient: {
+    blue: 'linear-gradient(135deg, rgba(28, 88, 247, 1) 0%, rgba(98, 141, 251, 1) 50%, rgba(168, 195, 255, 1) 100%)',
+    darkBlue: 'linear-gradient(135deg, rgba(23, 38, 61, 1) 0%, rgba(13, 36, 92, 1) 50%, rgba(2, 34, 123, 1) 100%)',
   },
 } as const;
 
@@ -118,7 +138,56 @@ export const COLORS = {
  * Typography scale matching Figma text styles
  */
 export const TYPOGRAPHY = {
-  // Card title (14px / 22px / 500)
+  // Headings
+  headingH5: {
+    fontFamily: 'DM Sans',
+    fontSize: '28px',
+    lineHeight: '40px', // 1.43em
+    fontWeight: 600,
+  },
+  headingH6: {
+    fontFamily: 'DM Sans',
+    fontSize: '24px',
+    lineHeight: '30px', // 1.25em
+    fontWeight: 600,
+  },
+
+  // Body Large
+  bodyLargeMedium: {
+    fontFamily: 'DM Sans',
+    fontSize: '18px',
+    lineHeight: '26px', // 1.44em
+    fontWeight: 500,
+  },
+  bodyLargeBold: {
+    fontFamily: 'DM Sans',
+    fontSize: '18px',
+    lineHeight: '26px',
+    fontWeight: 700,
+  },
+
+  // Body Medium
+  bodyMediumMedium: {
+    fontFamily: 'DM Sans',
+    fontSize: '16px',
+    lineHeight: '24px', // 1.5em
+    fontWeight: 500,
+    letterSpacing: '0.02em', // 1.25%
+  },
+  bodyMediumSemiBold: {
+    fontFamily: 'DM Sans',
+    fontSize: '16px',
+    lineHeight: '24px',
+    fontWeight: 600,
+  },
+
+  // Body Small
+  bodySmallText: {
+    fontFamily: 'DM Sans',
+    fontSize: '14px',
+    lineHeight: '22px', // 1.57em
+    fontWeight: 400,
+  },
   bodySmallMedium: {
     fontFamily: 'DM Sans',
     fontSize: '14px',
@@ -126,12 +195,18 @@ export const TYPOGRAPHY = {
     fontWeight: 500,
   },
 
-  // Main value (18px / 26px / 700)
-  bodyLargeBold: {
+  // Body Extra Small
+  bodyExtraSmallText: {
     fontFamily: 'DM Sans',
-    fontSize: '18px',
-    lineHeight: '26px',
-    fontWeight: 700,
+    fontSize: '12px',
+    lineHeight: '20px', // 1.67em
+    fontWeight: 400,
+  },
+  bodyExtraSmallMedium: {
+    fontFamily: 'DM Sans',
+    fontSize: '12px',
+    lineHeight: '20px',
+    fontWeight: 500,
   },
 
   // Trend/Insight text (10px / 16px / 400, uppercase)
@@ -141,22 +216,6 @@ export const TYPOGRAPHY = {
     lineHeight: '16px',
     fontWeight: 400,
     textTransform: 'uppercase' as const,
-  },
-
-  // Pre/Post labels (12px / 20px / 500)
-  bodyExtraSmallMedium: {
-    fontFamily: 'DM Sans',
-    fontSize: '12px',
-    lineHeight: '20px',
-    fontWeight: 500,
-  },
-
-  // Pre/Post values (12px / 20px / 400)
-  bodyExtraSmallText: {
-    fontFamily: 'DM Sans',
-    fontSize: '12px',
-    lineHeight: '20px',
-    fontWeight: 400,
   },
 } as const;
 
