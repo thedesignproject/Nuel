@@ -39,19 +39,19 @@ export const ImpactSummaryCard: React.FC<ImpactSummaryCardProps> = ({
         borderRadius: BORDER_RADIUS.card,
       }}
     >
-      {/* Label */}
+      {/* Label - Left Aligned */}
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignSelf: 'stretch',
-          gap: SPACING[2],
         }}
       >
         <span
           style={{
             ...TYPOGRAPHY.bodyExtraSmallText,
             color: COLORS.text.secondary,
+            textAlign: 'left',
           }}
         >
           {label}
@@ -124,7 +124,7 @@ export const ImpactSummaryCard: React.FC<ImpactSummaryCardProps> = ({
             style={{
               ...TYPOGRAPHY.bodySmallText,
               color: COLORS.text.primary,
-              textAlign: 'center',
+              textAlign: 'left',
             }}
           >
             {description}

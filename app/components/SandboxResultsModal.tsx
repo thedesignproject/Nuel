@@ -449,9 +449,9 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
             Opportunities ({opportunities.length})
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING[12] }}>
             {hasOpportunities ? (
-              opportunities.map((opp, idx) => {
+              opportunities.slice(0, 3).map((opp, idx) => {
                 // Skip opportunities that repeat location information already shown
                 const shouldShowFullDescription = !(
                   results.plantsAtCapacity &&
@@ -465,97 +465,36 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                   displayDescription = 'Consider implementing overflow routing or partnering with co-manufacturers to handle excess demand during peak periods.';
                 }
 
+                // Determine impact color based on opportunity type
+                const getImpactColor = () => {
+                  switch (opp.type) {
+                    case 'cost_saving':
+                      return COLORS.semantic.success[500];
+                    case 'capacity':
+                      return COLORS.semantic.error[500];
+                    case 'efficiency':
+                      return COLORS.accent[500];
+                    case 'risk_mitigation':
+                      return COLORS.semantic.warning[500];
+                    default:
+                      return COLORS.semantic.success[500];
+                  }
+                };
+
                 return (
-                  <div
+                  <OpportunityCard
                     key={idx}
-                    style={{
-                      backgroundColor: '#FFFFFF',
-                      border: '2px solid #1C58F7',
-                      borderRadius: '16px',
-                      padding: '14px',
+                    title={opp.title}
+                    description={displayDescription}
+                    impact={opp.savings}
+                    impactColor={getImpactColor()}
+                    isRecommended={idx === 0}
+                    variant={idx === 0 ? 'prominent' : 'subtle'}
+                    onViewDetails={() => {
+                      // Handle navigation to the linked section
+                      console.log(`Navigate to ${opp.link}`);
                     }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                      <div
-                        style={{
-                          width: '30px',
-                          height: '30px',
-                          borderRadius: '8px',
-                          backgroundColor: '#EFF6FF',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Lightbulb size={14} weight="fill" color="#3B82F6" />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                          <h3
-                            style={{
-                              fontFamily: 'DM Sans',
-                              fontSize: '13px',
-                              fontWeight: 600,
-                              color: COLORS.text.primary,
-                              margin: 0,
-                              flex: 1,
-                            }}
-                          >
-                            {opp.title}
-                          </h3>
-                          <div
-                            style={{
-                              padding: '4px 10px',
-                              borderRadius: '8px',
-                              backgroundColor: COLORS.semantic.success[50],
-                              border: `2px solid ${COLORS.semantic.success[200]}`,
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontFamily: 'DM Sans',
-                                fontSize: '11px',
-                                fontWeight: 700,
-                                color: COLORS.semantic.success[700],
-                              }}
-                            >
-                              {opp.savings}
-                            </span>
-                          </div>
-                        </div>
-                        <p
-                          style={{
-                            fontFamily: 'DM Sans',
-                            fontSize: '12px',
-                            color: COLORS.text.secondary,
-                            margin: '0 0 10px 0',
-                            lineHeight: '18px',
-                          }}
-                        >
-                          {displayDescription}
-                        </p>
-                        <button
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            backgroundColor: 'transparent',
-                            border: 'none',
-                            color: '#3B82F6',
-                            fontFamily: 'DM Sans',
-                            fontSize: '12px',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            padding: 0,
-                          }}
-                        >
-                          View in {opp.link}
-                          <ArrowRight size={12} weight="bold" color="#3B82F6" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  />
                 );
               })
             ) : (

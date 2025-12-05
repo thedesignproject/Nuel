@@ -55,7 +55,7 @@ export interface SimulationResults {
 
 // Base metrics (before simulation)
 const BASE_METRICS = {
-  totalCost: 2450000,
+  totalCost: 3850000,
   inventoryLevel: 85,
   serviceLevel: 94,
   capacityUtilization: 78,
@@ -100,7 +100,7 @@ const calculateSupplierFailure = (
   });
 
   // Update impact metrics
-  const costImpact = severity > 30 ? 85000 : 0;
+  const costImpact = severity > 30 ? 175000 : 0;
   const serviceLevelImpact = severity > 30 ? -8 : 0;
 
   results.impactMetrics.cost.after += costImpact;
@@ -135,7 +135,7 @@ const calculateMaterialFlowDisruption = (
   });
 
   // Update impact metrics
-  const costImpact = downtime * 1850;
+  const costImpact = downtime * 3800;
   const inventoryImpact = 12;
 
   results.impactMetrics.cost.after += costImpact;
@@ -213,7 +213,7 @@ const calculateCapacityAdjustment = (
   });
 
   // Update impact metrics
-  const costImpact = (newCapacity - 100) * (isExpansion ? 1200 : -1800);
+  const costImpact = (newCapacity - 100) * (isExpansion ? 2500 : -3500);
   const capacityImpact = newCapacity - 100;
 
   results.impactMetrics.cost.after += costImpact;
@@ -274,7 +274,7 @@ const calculateSeasonalSpike = (
   });
 
   // Update impact metrics
-  const costImpact = demandIncrease * 2800;
+  const costImpact = demandIncrease * 5500;
   const inventoryImpact = Math.round(demandIncrease * 0.8);
   const serviceLevelImpact = demandIncrease > 40 ? -6 : 0;
 
@@ -311,7 +311,7 @@ const calculateRegionalDemandDrop = (
   });
 
   // Update impact metrics
-  const costImpact = demandDrop * 1200 * affectedRegions;
+  const costImpact = demandDrop * 2400 * affectedRegions;
   const inventoryImpact = Math.round(demandDrop * 1.2);
 
   results.impactMetrics.cost.after += costImpact;
@@ -353,7 +353,7 @@ const calculateSafetyStockAdjustment = (
   });
 
   // Update impact metrics
-  const costImpact = (stockLevel - 15) * 3200;
+  const costImpact = (stockLevel - 15) * 6000;
   const inventoryImpact = (stockLevel - 15) * 2;
   const serviceLevelImpact = isIncrease ? 3 : (stockLevel < 10 ? -Math.round((15 - stockLevel) * 0.6) : 0);
 
@@ -390,7 +390,7 @@ const calculateCarrierCapacity = (
   });
 
   // Update impact metrics
-  const costImpact = capacityReduction * 950;
+  const costImpact = capacityReduction * 2000;
   const serviceLevelImpact = -Math.round(capacityReduction / 6);
 
   results.impactMetrics.cost.after += costImpact;
@@ -424,7 +424,7 @@ const calculateFreightCostVariation = (
   });
 
   // Update impact metrics
-  const costImpact = costIncrease * 3800;
+  const costImpact = costIncrease * 7500;
 
   results.impactMetrics.cost.after += costImpact;
 };
@@ -456,7 +456,7 @@ const calculateMultiStopOptimization = (
   });
 
   // Update impact metrics (cost savings)
-  const costSavings = -Math.abs(consolidationLevel * 280);
+  const costSavings = -Math.abs(consolidationLevel * 850);
 
   results.impactMetrics.cost.after += costSavings;
 };

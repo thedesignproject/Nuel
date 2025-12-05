@@ -8,21 +8,28 @@ interface OpportunityCardProps {
   title: string;
   description: string;
   impact: string;
-  cost: string;
-  delivery: string;
+  impactColor?: string;
+  cost?: string;
+  delivery?: string;
   isRecommended?: boolean;
   onViewDetails?: () => void;
+  variant?: 'prominent' | 'subtle';
 }
 
 export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   title,
   description,
   impact,
+  impactColor = COLORS.semantic.success[500],
   cost,
   delivery,
   isRecommended = false,
   onViewDetails,
+  variant = 'prominent',
 }) => {
+  // Determine styling based on variant
+  const isProminent = variant === 'prominent';
+
   return (
     <div
       style={{
@@ -30,13 +37,15 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         flexDirection: 'column',
         gap: SPACING[12],
         padding: SPACING[16],
-        backgroundColor: COLORS.accent[100],
-        border: `1px solid transparent`,
+        backgroundColor: isProminent ? COLORS.accent[100] : COLORS.neutral[50],
+        border: `1px solid ${isProminent ? 'transparent' : COLORS.border.default}`,
         borderRadius: BORDER_RADIUS.card,
-        backgroundImage: `linear-gradient(${COLORS.accent[100]}, ${COLORS.accent[100]}), ${COLORS.gradient.blue}`,
-        backgroundOrigin: 'border-box',
-        backgroundClip: 'padding-box, border-box',
-        width: '561px',
+        backgroundImage: isProminent
+          ? `linear-gradient(${COLORS.accent[100]}, ${COLORS.accent[100]}), ${COLORS.gradient.blue}`
+          : 'none',
+        backgroundOrigin: isProminent ? 'border-box' : undefined,
+        backgroundClip: isProminent ? 'padding-box, border-box' : undefined,
+        alignSelf: 'stretch',
       }}
     >
       {/* Title Row */}
@@ -54,6 +63,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           style={{
             ...TYPOGRAPHY.bodyMediumMedium,
             color: COLORS.text.primary,
+            flex: 1,
           }}
         >
           {title}
@@ -105,13 +115,14 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         {description}
       </span>
 
-      {/* Impact */}
+      {/* Impact Row - Own Row with Color Coding */}
       <div
         style={{
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
           gap: SPACING[4],
+          alignSelf: 'stretch',
         }}
       >
         <Crosshair size={16} weight="regular" color={COLORS.primary[700]} />
@@ -135,7 +146,8 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           <span
             style={{
               ...TYPOGRAPHY.bodyExtraSmallText,
-              color: COLORS.semantic.success[500],
+              color: impactColor,
+              fontWeight: 600,
             }}
           >
             {impact}
@@ -143,95 +155,101 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
         </div>
       </div>
 
-      {/* Insights Row */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignSelf: 'stretch',
-          flexWrap: 'wrap',
-          gap: SPACING[16],
-          paddingLeft: '2px',
-        }}
-      >
-        {/* Cost Item */}
+      {/* Insights Row - Cost and Delivery */}
+      {(cost || delivery) && (
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
-            alignItems: 'center',
-            gap: SPACING[4],
+            alignSelf: 'stretch',
+            flexWrap: 'wrap',
+            gap: SPACING[16],
+            paddingLeft: '2px',
           }}
         >
-          <CurrencyDollarSimple size={16} weight="regular" color={COLORS.primary[700]} />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: SPACING[4],
-              paddingTop: '1px',
-            }}
-          >
-            <span
+          {/* Cost Item */}
+          {cost && (
+            <div
               style={{
-                ...TYPOGRAPHY.bodyExtraSmallText,
-                color: COLORS.text.secondary,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: SPACING[4],
               }}
             >
-              Cost:
-            </span>
-            <span
-              style={{
-                ...TYPOGRAPHY.bodyExtraSmallText,
-                color: COLORS.text.primary,
-              }}
-            >
-              {cost}
-            </span>
-          </div>
-        </div>
+              <CurrencyDollarSimple size={16} weight="regular" color={COLORS.primary[700]} />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: SPACING[4],
+                  paddingTop: '1px',
+                }}
+              >
+                <span
+                  style={{
+                    ...TYPOGRAPHY.bodyExtraSmallText,
+                    color: COLORS.text.secondary,
+                  }}
+                >
+                  Cost:
+                </span>
+                <span
+                  style={{
+                    ...TYPOGRAPHY.bodyExtraSmallText,
+                    color: COLORS.text.primary,
+                  }}
+                >
+                  {cost}
+                </span>
+              </div>
+            </div>
+          )}
 
-        {/* Delivery Item */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: SPACING[4],
-          }}
-        >
-          <Truck size={16} weight="regular" color={COLORS.primary[700]} />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: SPACING[4],
-              paddingTop: '1px',
-            }}
-          >
-            <span
+          {/* Delivery Item */}
+          {delivery && (
+            <div
               style={{
-                ...TYPOGRAPHY.bodyExtraSmallText,
-                color: COLORS.text.secondary,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: SPACING[4],
               }}
             >
-              Delivery:
-            </span>
-            <span
-              style={{
-                ...TYPOGRAPHY.bodyExtraSmallText,
-                color: COLORS.text.primary,
-              }}
-            >
-              {delivery}
-            </span>
-          </div>
+              <Truck size={16} weight="regular" color={COLORS.primary[700]} />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: SPACING[4],
+                  paddingTop: '1px',
+                }}
+              >
+                <span
+                  style={{
+                    ...TYPOGRAPHY.bodyExtraSmallText,
+                    color: COLORS.text.secondary,
+                  }}
+                >
+                  Delivery:
+                </span>
+                <span
+                  style={{
+                    ...TYPOGRAPHY.bodyExtraSmallText,
+                    color: COLORS.text.primary,
+                  }}
+                >
+                  {delivery}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
-      {/* Action Button */}
+      {/* Action Button - Primary Gradient */}
       <div
         style={{
           display: 'flex',

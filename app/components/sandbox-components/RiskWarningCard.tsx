@@ -28,55 +28,28 @@ export const RiskWarningCard: React.FC<RiskWarningCardProps> = ({
       }}
     >
       {/* Header with WARNING Badge */}
+      {/* Warning Badge - Hugs Content */}
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
+          alignItems: 'center',
           gap: SPACING[4],
-          paddingBottom: '1px',
+          padding: '2px 12px',
+          backgroundColor: COLORS.semantic.warning[300],
+          borderRadius: BORDER_RADIUS.full,
+          width: 'fit-content',
         }}
       >
-        <div
+        <Warning size={16} weight="regular" color={COLORS.text.heading} />
+        <span
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            gap: SPACING[8],
-            width: '145px',
+            ...TYPOGRAPHY.bodyExtraSmallMedium,
+            color: COLORS.text.heading,
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              gap: SPACING[8],
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                alignSelf: 'stretch',
-                gap: SPACING[4],
-                padding: '2px 12px',
-                backgroundColor: COLORS.semantic.warning[300],
-                borderRadius: BORDER_RADIUS.full,
-              }}
-            >
-              <Warning size={16} weight="regular" color={COLORS.text.heading} />
-              <span
-                style={{
-                  ...TYPOGRAPHY.bodyExtraSmallMedium,
-                  color: COLORS.text.heading,
-                }}
-              >
-                WARNING
-              </span>
-            </div>
-          </div>
-        </div>
+          WARNING
+        </span>
       </div>
 
       {/* Content */}
