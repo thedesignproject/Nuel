@@ -8,3 +8,4 @@ export { ImpactSummaryCard } from './ImpactSummaryCard';
 export { RevisitScheduleCard } from './RevisitScheduleCard';
 export { OpportunityCard } from './OpportunityCard';
 export { RiskWarningCard } from './RiskWarningCard';
+export { PlantCapacityCard } from './PlantCapacityCard';

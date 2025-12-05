@@ -25,6 +25,7 @@ import {
   RevisitScheduleCard,
   OpportunityCard,
   RiskWarningCard,
+  PlantCapacityCard,
 } from './sandbox-components';
 
 interface SandboxResultsModalProps {
@@ -229,6 +230,13 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                 breakdownItems={getBreakdownItems()}
               />
             )}
+
+            {/* NEW: Plant Capacity Card - Shows locations at max capacity for Peak Demand */}
+            {(results.scenarioType === 'Peak Demand' || results.scenarioType === 'Seasonal Spike') &&
+              results.plantsAtCapacity &&
+              results.plantsAtCapacity.length > 0 && (
+                <PlantCapacityCard locations={results.plantsAtCapacity} />
+              )}
 
             {/* Comparison Card - Before/After Values (for Regional Demand Drop) */}
             {results.scenarioType === 'Regional Demand Drop' && (
