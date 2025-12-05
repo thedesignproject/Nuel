@@ -466,7 +466,14 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
                 }
 
                 // Determine impact color based on opportunity type
+                // Recommended cards always show green, others color-coded by type
                 const getImpactColor = () => {
+                  if (idx === 0) {
+                    // Recommended card always uses green semantic color
+                    return COLORS.semantic.success[500];
+                  }
+
+                  // Non-recommended cards color-coded by type
                   switch (opp.type) {
                     case 'cost_saving':
                       return COLORS.semantic.success[500];
