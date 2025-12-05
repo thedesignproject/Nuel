@@ -593,160 +593,17 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
             Risks ({risks.length})
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {/* NEW: Risk Warning Cards - Figma Design */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {hasRisks ? (
-              risks.map((risk, idx) => {
-                // Determine severity-based styling
-                const getSeverityStyle = () => {
-                  switch (risk.severity) {
-                    case 'CRITICAL':
-                      return {
-                        cardBg: COLORS.semantic.error[50],
-                        borderColor: COLORS.semantic.error[200],
-                        badgeColor: COLORS.semantic.error[600],
-                        badgeBg: COLORS.semantic.error[50],
-                        iconBg: COLORS.semantic.error[100],
-                        iconColor: COLORS.semantic.error[600],
-                      };
-                    case 'HIGH':
-                      return {
-                        cardBg: COLORS.semantic.error[50],
-                        borderColor: COLORS.semantic.error[300],
-                        badgeColor: COLORS.semantic.error[500],
-                        badgeBg: COLORS.semantic.error[50],
-                        iconBg: COLORS.semantic.error[100],
-                        iconColor: COLORS.semantic.error[500],
-                      };
-                    case 'MEDIUM':
-                      return {
-                        cardBg: COLORS.semantic.warning[50],
-                        borderColor: COLORS.semantic.warning[200],
-                        badgeColor: COLORS.semantic.warning[700],
-                        badgeBg: COLORS.semantic.warning[50],
-                        iconBg: COLORS.semantic.warning[100],
-                        iconColor: COLORS.semantic.warning[600],
-                      };
-                    default:
-                      return {
-                        cardBg: COLORS.neutral[50],
-                        borderColor: COLORS.border.subtle,
-                        badgeColor: COLORS.text.secondary,
-                        badgeBg: COLORS.neutral[100],
-                        iconBg: COLORS.neutral[100],
-                        iconColor: COLORS.text.secondary,
-                      };
-                  }
-                };
-
-                const style = getSeverityStyle();
-
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      backgroundColor: style.cardBg,
-                      border: `2px solid ${style.borderColor}`,
-                      borderRadius: '16px',
-                      padding: '16px',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '10px' }}>
-                      <div
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '8px',
-                          backgroundColor: style.iconBg,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}
-                      >
-                        <ShieldWarning size={16} weight="fill" color={style.iconColor} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                          <h3
-                            style={{
-                              fontFamily: 'DM Sans',
-                              fontSize: '13px',
-                              fontWeight: 600,
-                              color: COLORS.text.primary,
-                              margin: 0,
-                              flex: 1,
-                            }}
-                          >
-                            {risk.title}
-                          </h3>
-                          <span
-                            style={{
-                              fontFamily: 'DM Sans',
-                              fontSize: '10px',
-                              fontWeight: 700,
-                              color: style.badgeColor,
-                              backgroundColor: style.badgeBg,
-                              padding: '4px 8px',
-                              borderRadius: '8px',
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px',
-                              border: `2px solid ${style.borderColor}`,
-                            }}
-                          >
-                            {risk.severity}
-                          </span>
-                        </div>
-                        <p
-                          style={{
-                            fontFamily: 'DM Sans',
-                            fontSize: '12px',
-                            color: COLORS.text.secondary,
-                            margin: '0 0 10px 0',
-                            lineHeight: '18px',
-                          }}
-                        >
-                          {risk.description}
-                        </p>
-                        <div
-                          style={{
-                            backgroundColor: COLORS.neutral[100],
-                            border: `2px solid ${COLORS.border.default}`,
-                            borderRadius: '12px',
-                            padding: '12px',
-                          }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '5px' }}>
-                            <CheckCircle size={12} weight="fill" color={COLORS.semantic.info[600]} />
-                            <span
-                              style={{
-                                fontFamily: 'DM Sans',
-                                fontSize: '10px',
-                                fontWeight: 700,
-                                color: COLORS.text.secondary,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                              }}
-                            >
-                              Mitigation
-                            </span>
-                          </div>
-                          <p
-                            style={{
-                              fontFamily: 'DM Sans',
-                              fontSize: '11px',
-                              color: COLORS.text.secondary,
-                              margin: 0,
-                              lineHeight: '16px',
-                            }}
-                          >
-                            {risk.mitigation}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+              risks.map((risk, idx) => (
+                <RiskWarningCard
+                  key={idx}
+                  title={risk.title}
+                  description={risk.description}
+                  severity={risk.severity === 'MEDIUM' ? 'warning' : 'critical'}
+                />
+              ))
             ) : (
               <div
                 style={{
