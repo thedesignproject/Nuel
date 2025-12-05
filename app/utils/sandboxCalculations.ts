@@ -601,19 +601,7 @@ export const calculateSimulationResults = (
 
   // Add Peak Demand specific opportunities
   if (primaryScenarioType === 'Peak Demand' || primaryScenarioType === 'Seasonal Spike') {
-    // Add capacity utilization opportunity showing plants at max capacity
-    if (results.plantsAtCapacity && results.plantsAtCapacity.length > 0) {
-      results.opportunities.unshift({
-        severity: 'CRITICAL',
-        title: 'Capacity Constraint Alert',
-        description: `The following plants will hit maximum capacity: ${results.plantsAtCapacity.join(', ')}. Consider overflow routing or co-manufacturing.`,
-        savings: `Avoid ${formatCurrency(results.plantsAtCapacity.length * 75000)} in lost revenue`,
-        link: 'Production Planning',
-        type: 'capacity',
-      });
-    }
-
-    // Add additional opportunity for demand management
+    // Add opportunity for demand management
     results.opportunities.unshift({
       severity: 'HIGH',
       title: 'Demand Management Strategy',
