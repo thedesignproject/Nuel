@@ -20,6 +20,12 @@ import {
 } from '@phosphor-icons/react';
 import { SimulationResults } from '@/app/utils/sandboxCalculations';
 import { COLORS, SPACING, CARD_CURVATURE } from '../design-tokens';
+import {
+  ImpactSummaryCard,
+  RevisitScheduleCard,
+  OpportunityCard,
+  RiskWarningCard,
+} from './sandbox-components';
 
 interface SandboxResultsModalProps {
   isOpen: boolean;
@@ -98,6 +104,29 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
   const costChangePercent = results.impactMetrics.cost.before > 0
     ? (((results.impactMetrics.cost.after - results.impactMetrics.cost.before) / results.impactMetrics.cost.before) * 100)
     : 0;
+
+  // Prepare breakdown items based on scenario type
+  const getBreakdownItems = () => {
+    if (results.scenarioType === 'Peak Demand' || results.scenarioType === 'Seasonal Spike') {
+      return [
+        { label: 'Increased Production', value: `$${Math.round(costDifference * 0.45).toLocaleString()}`, color: '#3B82F6' },
+        { label: 'Logistics & Distribution', value: `$${Math.round(costDifference * 0.30).toLocaleString()}`, color: '#8B5CF6' },
+        { label: 'Inventory Holding', value: `$${Math.round(costDifference * 0.25).toLocaleString()}`, color: '#F59E0B' },
+      ];
+    } else if (results.scenarioType === 'Planned Shutdown' || results.scenarioType === 'Planned Maintenance') {
+      return [
+        { label: 'Lost Production Time', value: `$${Math.round(costDifference * 0.40).toLocaleString()}`, color: '#EF4444' },
+        { label: 'Reallocation to Other Plants', value: `$${Math.round(costDifference * 0.35).toLocaleString()}`, color: '#F59E0B' },
+        { label: 'Expedited Shipping', value: `$${Math.round(costDifference * 0.25).toLocaleString()}`, color: '#8B5CF6' },
+      ];
+    } else {
+      return [
+        { label: 'Reduced Production Costs', value: `-$${Math.round(costDifference * 0.50).toLocaleString()}`, color: '#10B981' },
+        { label: 'Lower Distribution Expenses', value: `-$${Math.round(costDifference * 0.30).toLocaleString()}`, color: '#10B981' },
+        { label: 'Inventory Optimization', value: `-$${Math.round(costDifference * 0.20).toLocaleString()}`, color: '#10B981' },
+      ];
+    }
+  };
 
   return (
     <Modal
@@ -181,232 +210,24 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
               </div>
             )}
 
-            {/* Numbers Card - Cost Metrics (Locked Format) */}
+            {/* NEW: Impact Summary Card - Figma Design */}
             {(results.scenarioType === 'Peak Demand' ||
               results.scenarioType === 'Seasonal Spike' ||
               results.scenarioType === 'Planned Shutdown' ||
               results.scenarioType === 'Planned Maintenance' ||
               results.scenarioType === 'Regional Demand Drop') && (
-              <div
-                style={{
-                  backgroundColor: '#EFF6FF',
-                  border: '2px solid #3B82F6',
-                  borderRadius: '16px',
-                  padding: '18px',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      backgroundColor: '#DBEAFE',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <CurrencyDollar size={18} weight="bold" color="#1D4ED8" />
-                  </div>
-                  <h3
-                    style={{
-                      fontFamily: 'DM Sans',
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      color: COLORS.text.primary,
-                      margin: 0,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.8px',
-                    }}
-                  >
-                    {results.scenarioType === 'Regional Demand Drop' ? 'Cost Reduction' : 'Additional Cost'}
-                  </h3>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '8px' }}>
-                  <span
-                    style={{
-                      fontFamily: 'DM Sans',
-                      fontSize: '36px',
-                      fontWeight: 800,
-                      color: COLORS.text.primary,
-                      lineHeight: 1,
-                      letterSpacing: '-1px',
-                    }}
-                  >
-                    {results.scenarioType === 'Regional Demand Drop' ? '-' : '+'}${costDifference.toLocaleString()}
-                  </span>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      padding: '5px 10px',
-                      borderRadius: '10px',
-                      backgroundColor: results.scenarioType === 'Regional Demand Drop' ? COLORS.semantic.success[100] : COLORS.semantic.error[100],
-                      border: `2px solid ${results.scenarioType === 'Regional Demand Drop' ? COLORS.semantic.success[300] : COLORS.semantic.error[300]}`,
-                    }}
-                  >
-                    {results.scenarioType === 'Regional Demand Drop' ? (
-                      <TrendDown size={14} weight="bold" color={COLORS.semantic.success[700]} />
-                    ) : (
-                      <TrendUp size={14} weight="bold" color={COLORS.semantic.error[700]} />
-                    )}
-                    <span
-                      style={{
-                        fontFamily: 'DM Sans',
-                        fontSize: '12px',
-                        fontWeight: 800,
-                        color: results.scenarioType === 'Regional Demand Drop' ? COLORS.semantic.success[800] : COLORS.semantic.error[800],
-                      }}
-                    >
-                      {Math.abs(costChangePercent).toFixed(1)}%
-                    </span>
-                  </div>
-                </div>
-                <p
-                  style={{
-                    fontFamily: 'DM Sans',
-                    fontSize: '12px',
-                    color: COLORS.text.secondary,
-                    margin: '0 0 12px 0',
-                    lineHeight: '18px',
-                  }}
-                >
-                  {results.scenarioType === 'Regional Demand Drop'
+              <ImpactSummaryCard
+                label={results.scenarioType === 'Regional Demand Drop' ? 'COST REDUCTION' : 'ADDITIONAL COST'}
+                value={`${results.scenarioType === 'Regional Demand Drop' ? '-' : '+'}$${costDifference.toLocaleString()}`}
+                trend={`${Math.abs(costChangePercent).toFixed(1)}%`}
+                trendDirection={results.scenarioType === 'Regional Demand Drop' ? 'down' : 'up'}
+                description={
+                  results.scenarioType === 'Regional Demand Drop'
                     ? 'Projected savings from reduced operations'
-                    : 'Incremental cost to execute this scenario'}
-                </p>
-
-                {/* Cost Breakdown Indicators */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '6px',
-                    padding: '12px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(59, 130, 246, 0.2)',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ fontFamily: 'DM Sans', fontSize: '10px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                      Cost Breakdown
-                    </span>
-                  </div>
-
-                  {results.scenarioType === 'Peak Demand' || results.scenarioType === 'Seasonal Spike' ? (
-                    <>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#3B82F6' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Increased Production
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          ${Math.round(costDifference * 0.45).toLocaleString()}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#8B5CF6' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Logistics & Distribution
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          ${Math.round(costDifference * 0.30).toLocaleString()}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Inventory Holding
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          ${Math.round(costDifference * 0.25).toLocaleString()}
-                        </span>
-                      </div>
-                    </>
-                  ) : results.scenarioType === 'Planned Shutdown' || results.scenarioType === 'Planned Maintenance' ? (
-                    <>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#EF4444' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Lost Production Time
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          ${Math.round(costDifference * 0.40).toLocaleString()}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Reallocation to Other Plants
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          ${Math.round(costDifference * 0.35).toLocaleString()}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#8B5CF6' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Expedited Shipping
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          ${Math.round(costDifference * 0.25).toLocaleString()}
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Reduced Production Costs
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          -${Math.round(costDifference * 0.50).toLocaleString()}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Lower Distribution Expenses
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          -${Math.round(costDifference * 0.30).toLocaleString()}
-                        </span>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
-                          <span style={{ fontFamily: 'DM Sans', fontSize: '11px', color: '#374151' }}>
-                            Inventory Optimization
-                          </span>
-                        </div>
-                        <span style={{ fontFamily: 'DM Sans', fontSize: '11px', fontWeight: 600, color: '#1F2937' }}>
-                          -${Math.round(costDifference * 0.20).toLocaleString()}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
+                    : 'Incremental cost to execute this scenario'
+                }
+                breakdownItems={getBreakdownItems()}
+              />
             )}
 
             {/* Comparison Card - Before/After Values (for Regional Demand Drop) */}
@@ -601,70 +422,13 @@ export const SandboxResultsModal: React.FC<SandboxResultsModalProps> = ({
               </div>
             )}
 
-            {/* Best Month Recommendation (for Planned Shutdown) */}
+            {/* NEW: Revisit Schedule Card - Figma Design */}
             {results.bestMonth && (results.scenarioType === 'Planned Shutdown' || results.scenarioType === 'Planned Maintenance') && (
-              <div
-                style={{
-                  backgroundColor: '#F3F4F6',
-                  border: '2px solid #6B7280',
-                  borderRadius: '16px',
-                  padding: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                }}
-              >
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: '#E5E7EB',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <ChartLine size={16} weight="bold" color="#374151" />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <h4
-                    style={{
-                      fontFamily: 'DM Sans',
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      color: '#374151',
-                      margin: '0 0 4px 0',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                    }}
-                  >
-                    Revisit Schedule
-                  </h4>
-                  <p
-                    style={{
-                      fontFamily: 'DM Sans',
-                      fontSize: '16px',
-                      fontWeight: 700,
-                      color: '#1F2937',
-                      margin: '0 0 2px 0',
-                    }}
-                  >
-                    {results.bestMonth}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: 'DM Sans',
-                      fontSize: '11px',
-                      color: '#4B5563',
-                      margin: 0,
-                    }}
-                  >
-                    Revisit schedule within this date
-                  </p>
-                </div>
-              </div>
+              <RevisitScheduleCard
+                label="REVISIT SCHEDULE"
+                date={results.bestMonth}
+                description="Revisit schedule within this date"
+              />
             )}
           </div>
         </div>
