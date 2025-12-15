@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Package, MagnifyingGlass, CaretDown, CaretUp } from '@phosphor-icons/react';
 import { SectionHeader } from './SectionHeader';
-import { StatusPill } from './StatusPill';
+import { StatusPill, StatusVariant } from './StatusPill';
 import { Dropdown } from './Dropdown';
 
 // ============================================
@@ -346,7 +346,7 @@ export const InventoryDetailsTable = React.forwardRef<HTMLDivElement, InventoryD
                   {/* Status */}
                   <td style={bodyCellStyle}>
                     <StatusPill
-                      variant={row.status === 'high' ? 'info' : row.status === 'low' ? 'warning' : row.status}
+                      variant={row.status === 'high' ? 'info' : row.status === 'low' ? 'warning' : row.status as StatusVariant}
                       label={row.status.charAt(0).toUpperCase() + row.status.slice(1)}
                     />
                   </td>

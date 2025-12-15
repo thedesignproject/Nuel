@@ -68,12 +68,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route));
 
-    if (!isAuthenticated && !isPublicRoute) {
+    if (!isAuthenticated && !isPublicRoute && pathname !== '/') {
       // Redirect to sign in if trying to access protected route
       router.push('/signin');
-    } else if (isAuthenticated && pathname === '/signin') {
-      // Redirect to dashboard if already authenticated and trying to access sign in
-      router.push('/');
+    } else if (isAuthenticated && (pathname === '/signin' || pathname === '/signup')) {
+      // Redirect to dashboard if already authenticated and trying to access auth pages
+      router.push('/dashboard');
     }
   }, [isAuthenticated, isLoading, pathname, router]);
 

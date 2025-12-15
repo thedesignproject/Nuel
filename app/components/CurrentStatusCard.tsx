@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { COLORS, SPACING, TYPOGRAPHY, CARD_CURVATURE } from '../design-tokens';
-import { StatusPill } from './StatusPill';
+import { StatusPill, StatusVariant } from './StatusPill';
 
 // ============================================
 // TYPE DEFINITIONS
@@ -99,7 +99,7 @@ export const CurrentStatusCard = React.forwardRef<HTMLDivElement, CurrentStatusC
           </h3>
           <StatusPill
             label={status.charAt(0).toUpperCase() + status.slice(1)}
-            variant={status}
+            variant={status as StatusVariant}
           />
         </div>
 

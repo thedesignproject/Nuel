@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 
 // ============================================
 // SIGN UP PAGE
@@ -13,6 +14,7 @@ import { Button } from '../components/Button';
 
 export default function SignUpPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [agreeToTerms, setAgreeToTerms] = useState(false);
@@ -39,13 +41,18 @@ export default function SignUpPage() {
 
     setIsLoading(true);
 
-    // Simulate submission (replace with actual API call)
     try {
+      // Simulate account creation
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Redirect to request review page
-      router.push('/request-review');
+
+      // Auto-login the user after successful signup
+      await login(email, 'defaultpassword');
+
+      // Redirect to dashboard
+      router.push('/dashboard');
     } catch {
       setError('Something went wrong. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -68,7 +75,7 @@ export default function SignUpPage() {
         {/* Header */}
         <div className="text-center mb-24">
           <h1 className="text-h6 font-semibold text-neutral-900 mb-8">
-            Submit Request Create an Account
+            Create an Account
           </h1>
           <p className="text-body-sm text-neutral-500">
             Create your account to access Nuel inventory management
@@ -133,7 +140,7 @@ export default function SignUpPage() {
             className="w-full justify-center mt-8"
             disabled={isLoading || !agreeToTerms}
           >
-            {isLoading ? 'Submitting...' : 'Submit'}
+            {isLoading ? 'Creating Account...' : 'Sign Up'}
           </Button>
         </form>
 
@@ -147,16 +154,6 @@ export default function SignUpPage() {
             Sign In
           </Link>
         </p>
-
-        {/* Info Box */}
-        <div className="mt-24 p-16 bg-neutral-50 rounded-lg">
-          <h3 className="text-body-sm font-semibold text-neutral-900 mb-8">
-            New Registration Process
-          </h3>
-          <p className="text-body-sm text-neutral-500">
-            After submitting your request, your IT administrator will review and approve your access. You&apos;ll receive an invite link via email to set your password.
-          </p>
-        </div>
       </div>
 
       {/* Footer */}

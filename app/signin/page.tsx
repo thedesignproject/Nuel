@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from '../components/Input';
 import { PasswordInput } from '../components/PasswordInput';
 import { Button } from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 
 // ============================================
 // SUPPORT ICON
@@ -33,6 +34,7 @@ const SupportIcon = () => (
 
 export default function SignInPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -55,19 +57,19 @@ export default function SignInPage() {
 
     setIsLoading(true);
 
-    // Simulate authentication (replace with actual auth logic)
     try {
-      // For demo purposes, accept any credentials
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Use AuthContext login function
+      const success = await login(email, password);
 
-      // Store auth state (simple localStorage for demo)
-      localStorage.setItem('isAuthenticated', 'true');
-      if (rememberMe) {
-        localStorage.setItem('userEmail', email);
+      if (success) {
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+        }
+        // AuthContext will handle redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        setError('Invalid email or password');
       }
-
-      // Redirect to executive dashboard
-      router.push('/dashboard');
     } catch {
       setError('Invalid email or password');
     } finally {

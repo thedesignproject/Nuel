@@ -5,6 +5,7 @@ import { Modal } from './Modal';
 import { Dropdown, DropdownOption } from './Dropdown';
 import { Button } from './Button';
 import { Slider } from './Slider';
+import { DateRangePicker } from './DateRangePicker';
 import { Plus, X, ArrowClockwise, PlayCircle, ArrowLeft } from '@phosphor-icons/react';
 
 // Parameter configurations for each variable
@@ -312,14 +313,16 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
 
   // Additional state for Planned Shutdown
   const [selectedMonths, setSelectedMonths] = useState<string[]>([]);
-  const [shutdownConfigs, setShutdownConfigs] = useState<Array<{ plant: string; months: string[]; days: number }>>([]);
+  const [shutdownConfigs, setShutdownConfigs] = useState<Array<{ plant: string; startDate: Date; endDate: Date; days: number }>>([]);
   const [tempPlant, setTempPlant] = useState('');
-  const [tempShutdownMonths, setTempShutdownMonths] = useState<string[]>([]);
+  const [tempShutdownStartDate, setTempShutdownStartDate] = useState<Date | null>(null);
+  const [tempShutdownEndDate, setTempShutdownEndDate] = useState<Date | null>(null);
   const [tempDays, setTempDays] = useState(30);
 
   // Additional state for Peak Demand
-  const [monthAllocations, setMonthAllocations] = useState<Array<{ months: string[]; demandPercent: number }>>([]);
-  const [tempMonths, setTempMonths] = useState<string[]>([]);
+  const [monthAllocations, setMonthAllocations] = useState<Array<{ startDate: Date; endDate: Date; demandPercent: number }>>([]);
+  const [tempDemandStartDate, setTempDemandStartDate] = useState<Date | null>(null);
+  const [tempDemandEndDate, setTempDemandEndDate] = useState<Date | null>(null);
   const [tempDemandPercent, setTempDemandPercent] = useState(30);
 
   // Configured scenarios state
@@ -871,77 +874,34 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                         marginBottom: '6px',
                       }}
                     >
-                      Select Months
+                      Select Date Range
                     </label>
-                    <div
-                      style={{
-                        backgroundColor: '#F9FAFB',
-                        border: '1px solid #D1D5DB',
-                        borderRadius: '6px',
-                        padding: '8px',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '6px',
-                      }}
-                    >
-                      {[
-                        { value: 'Jan', label: 'Jan', disabled: false },
-                        { value: 'Feb', label: 'Feb', disabled: false },
-                        { value: 'Mar', label: 'Mar', disabled: false },
-                        { value: 'Apr', label: 'Apr', disabled: false },
-                        { value: 'May', label: 'May', disabled: false },
-                        { value: 'Jun', label: 'Jun', disabled: false },
-                        { value: 'Jul', label: 'Jul', disabled: false },
-                        { value: 'Aug', label: 'Aug', disabled: false },
-                        { value: 'Sep', label: 'Sep', disabled: false },
-                        { value: 'Oct', label: 'Oct', disabled: false },
-                        { value: 'Nov', label: 'Nov', disabled: true },
-                        { value: 'Dec', label: 'Dec', disabled: true },
-                      ].map((month) => {
-                        const isSelected = tempShutdownMonths.includes(month.value);
-                        return (
-                          <button
-                            key={month.value}
-                            type="button"
-                            disabled={month.disabled}
-                            onClick={() => {
-                              if (month.disabled) return;
-                              if (isSelected) {
-                                setTempShutdownMonths(tempShutdownMonths.filter((m) => m !== month.value));
-                              } else {
-                                setTempShutdownMonths([...tempShutdownMonths, month.value]);
-                              }
-                            }}
-                            style={{
-                              fontFamily: 'DM Sans',
-                              fontSize: '12px',
-                              fontWeight: isSelected ? 600 : 400,
-                              padding: '6px 12px',
-                              borderRadius: '6px',
-                              border: month.disabled ? '1px solid #E5E7EB' : isSelected ? '1px solid #3B82F6' : '1px solid #D1D5DB',
-                              backgroundColor: month.disabled ? '#F9FAFB' : isSelected ? '#EFF6FF' : '#FFFFFF',
-                              color: month.disabled ? '#9CA3AF' : isSelected ? '#1E40AF' : '#374151',
-                              cursor: month.disabled ? 'not-allowed' : 'pointer',
-                              transition: 'all 0.2s',
-                            }}
-                          >
-                            {month.label}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <DateRangePicker
+                      startDate={tempShutdownStartDate}
+                      endDate={tempShutdownEndDate}
+                      onStartDateChange={setTempShutdownStartDate}
+                      onEndDateChange={setTempShutdownEndDate}
+                      minDate={new Date(2025, 0, 1)} // Jan 1, 2025
+                      maxDate={new Date(2025, 9, 31)} // Oct 31, 2025
+                    />
                   </div>
 
                   <button
                     onClick={() => {
-                      if (tempPlant && tempShutdownMonths.length > 0 && tempDays >= 1) {
-                        setShutdownConfigs([...shutdownConfigs, { plant: tempPlant, months: [...tempShutdownMonths], days: tempDays }]);
+                      if (tempPlant && tempShutdownStartDate && tempShutdownEndDate && tempDays >= 1) {
+                        setShutdownConfigs([...shutdownConfigs, {
+                          plant: tempPlant,
+                          startDate: tempShutdownStartDate,
+                          endDate: tempShutdownEndDate,
+                          days: tempDays
+                        }]);
                         setTempPlant('');
-                        setTempShutdownMonths([]);
+                        setTempShutdownStartDate(null);
+                        setTempShutdownEndDate(null);
                         setTempDays(30);
                       }
                     }}
-                    disabled={!tempPlant || tempShutdownMonths.length === 0}
+                    disabled={!tempPlant || !tempShutdownStartDate || !tempShutdownEndDate}
                     style={{
                       fontFamily: 'DM Sans',
                       fontSize: '14px',
@@ -949,9 +909,9 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                       padding: '8px 16px',
                       borderRadius: '6px',
                       border: 'none',
-                      backgroundColor: (tempPlant && tempShutdownMonths.length > 0) ? '#1C58F7' : '#E5E7EB',
-                      color: (tempPlant && tempShutdownMonths.length > 0) ? '#FFFFFF' : '#9CA3AF',
-                      cursor: (tempPlant && tempShutdownMonths.length > 0) ? 'pointer' : 'not-allowed',
+                      backgroundColor: (tempPlant && tempShutdownStartDate && tempShutdownEndDate) ? '#1C58F7' : '#E5E7EB',
+                      color: (tempPlant && tempShutdownStartDate && tempShutdownEndDate) ? '#FFFFFF' : '#9CA3AF',
+                      cursor: (tempPlant && tempShutdownStartDate && tempShutdownEndDate) ? 'pointer' : 'not-allowed',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '6px',
@@ -1003,25 +963,20 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                                 </span>
                               </div>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                                  {config.months.map((month, mIdx) => (
-                                    <span
-                                      key={mIdx}
-                                      style={{
-                                        fontFamily: 'DM Sans',
-                                        fontSize: '11px',
-                                        fontWeight: 600,
-                                        color: '#1E40AF',
-                                        backgroundColor: '#EFF6FF',
-                                        padding: '2px 8px',
-                                        borderRadius: '4px',
-                                        border: '1px solid #3B82F6',
-                                      }}
-                                    >
-                                      {month}
-                                    </span>
-                                  ))}
-                                </div>
+                                <span
+                                  style={{
+                                    fontFamily: 'DM Sans',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    color: '#1E40AF',
+                                    backgroundColor: '#EFF6FF',
+                                    padding: '4px 10px',
+                                    borderRadius: '6px',
+                                    border: '1px solid #3B82F6',
+                                  }}
+                                >
+                                  {config.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {config.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                </span>
                                 <div
                                   style={{
                                     display: 'flex',
@@ -1127,65 +1082,16 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                         marginBottom: '6px',
                       }}
                     >
-                      Select Months
+                      Select Date Range
                     </label>
-                    <div
-                      style={{
-                        backgroundColor: '#F9FAFB',
-                        border: '1px solid #D1D5DB',
-                        borderRadius: '6px',
-                        padding: '8px',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '6px',
-                      }}
-                    >
-                      {[
-                        { value: 'Jan', label: 'Jan', disabled: false },
-                        { value: 'Feb', label: 'Feb', disabled: false },
-                        { value: 'Mar', label: 'Mar', disabled: false },
-                        { value: 'Apr', label: 'Apr', disabled: false },
-                        { value: 'May', label: 'May', disabled: false },
-                        { value: 'Jun', label: 'Jun', disabled: false },
-                        { value: 'Jul', label: 'Jul', disabled: false },
-                        { value: 'Aug', label: 'Aug', disabled: false },
-                        { value: 'Sep', label: 'Sep', disabled: false },
-                        { value: 'Oct', label: 'Oct', disabled: false },
-                        { value: 'Nov', label: 'Nov', disabled: true },
-                        { value: 'Dec', label: 'Dec', disabled: true },
-                      ].map((month) => {
-                        const isSelected = tempMonths.includes(month.value);
-                        return (
-                          <button
-                            key={month.value}
-                            type="button"
-                            disabled={month.disabled}
-                            onClick={() => {
-                              if (month.disabled) return;
-                              if (isSelected) {
-                                setTempMonths(tempMonths.filter((m) => m !== month.value));
-                              } else {
-                                setTempMonths([...tempMonths, month.value]);
-                              }
-                            }}
-                            style={{
-                              fontFamily: 'DM Sans',
-                              fontSize: '12px',
-                              fontWeight: isSelected ? 600 : 400,
-                              padding: '6px 12px',
-                              borderRadius: '6px',
-                              border: month.disabled ? '1px solid #E5E7EB' : isSelected ? '1px solid #3B82F6' : '1px solid #D1D5DB',
-                              backgroundColor: month.disabled ? '#F9FAFB' : isSelected ? '#EFF6FF' : '#FFFFFF',
-                              color: month.disabled ? '#9CA3AF' : isSelected ? '#1E40AF' : '#374151',
-                              cursor: month.disabled ? 'not-allowed' : 'pointer',
-                              transition: 'all 0.2s',
-                            }}
-                          >
-                            {month.label}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <DateRangePicker
+                      startDate={tempDemandStartDate}
+                      endDate={tempDemandEndDate}
+                      onStartDateChange={setTempDemandStartDate}
+                      onEndDateChange={setTempDemandEndDate}
+                      minDate={new Date(2025, 0, 1)} // Jan 1, 2025
+                      maxDate={new Date(2025, 9, 31)} // Oct 31, 2025
+                    />
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '12px', alignItems: 'end' }}>
@@ -1224,13 +1130,18 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
 
                     <button
                       onClick={() => {
-                        if (tempMonths.length > 0 && tempDemandPercent >= 5) {
-                          setMonthAllocations([...monthAllocations, { months: [...tempMonths], demandPercent: tempDemandPercent }]);
-                          setTempMonths([]);
+                        if (tempDemandStartDate && tempDemandEndDate && tempDemandPercent >= 5) {
+                          setMonthAllocations([...monthAllocations, {
+                            startDate: tempDemandStartDate,
+                            endDate: tempDemandEndDate,
+                            demandPercent: tempDemandPercent
+                          }]);
+                          setTempDemandStartDate(null);
+                          setTempDemandEndDate(null);
                           setTempDemandPercent(30);
                         }
                       }}
-                      disabled={tempMonths.length === 0}
+                      disabled={!tempDemandStartDate || !tempDemandEndDate}
                       style={{
                         fontFamily: 'DM Sans',
                         fontSize: '14px',
@@ -1238,9 +1149,9 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                         padding: '8px 16px',
                         borderRadius: '6px',
                         border: 'none',
-                        backgroundColor: tempMonths.length > 0 ? '#1C58F7' : '#E5E7EB',
-                        color: tempMonths.length > 0 ? '#FFFFFF' : '#9CA3AF',
-                        cursor: tempMonths.length > 0 ? 'pointer' : 'not-allowed',
+                        backgroundColor: (tempDemandStartDate && tempDemandEndDate) ? '#1C58F7' : '#E5E7EB',
+                        color: (tempDemandStartDate && tempDemandEndDate) ? '#FFFFFF' : '#9CA3AF',
+                        cursor: (tempDemandStartDate && tempDemandEndDate) ? 'pointer' : 'not-allowed',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
@@ -1278,25 +1189,20 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                           }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', flex: 1 }}>
-                              {alloc.months.map((month, mIdx) => (
-                                <span
-                                  key={mIdx}
-                                  style={{
-                                    fontFamily: 'DM Sans',
-                                    fontSize: '11px',
-                                    fontWeight: 600,
-                                    color: '#1E40AF',
-                                    backgroundColor: '#EFF6FF',
-                                    padding: '2px 8px',
-                                    borderRadius: '4px',
-                                    border: '1px solid #3B82F6',
-                                  }}
-                                >
-                                  {month}
-                                </span>
-                              ))}
-                            </div>
+                            <span
+                              style={{
+                                fontFamily: 'DM Sans',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                color: '#1E40AF',
+                                backgroundColor: '#EFF6FF',
+                                padding: '4px 10px',
+                                borderRadius: '6px',
+                                border: '1px solid #3B82F6',
+                              }}
+                            >
+                              {alloc.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {alloc.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
                             <div
                               style={{
                                 display: 'flex',
