@@ -50,13 +50,19 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
   };
 
+  // Normalize date to midnight for comparison
+  const normalizeDate = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
+
   // Handle date selection
   const handleDateClick = (day: number) => {
     const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
 
-    // Check if date is disabled
-    if (minDate && selectedDate < minDate) return;
-    if (maxDate && selectedDate > maxDate) return;
+    // Check if date is disabled (normalize for comparison)
+    const normalizedSelected = normalizeDate(selectedDate);
+    if (minDate && normalizedSelected < normalizeDate(minDate)) return;
+    if (maxDate && normalizedSelected > normalizeDate(maxDate)) return;
 
     if (selectingStart) {
       onStartDateChange(selectedDate);
@@ -96,8 +102,15 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   // Check if date is disabled
   const isDateDisabled = (day: number) => {
     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    if (minDate && date < minDate) return true;
-    if (maxDate && date > maxDate) return true;
+    const normalizedDate = normalizeDate(date);
+    if (minDate) {
+      const normalizedMin = normalizeDate(minDate);
+      if (normalizedDate < normalizedMin) return true;
+    }
+    if (maxDate) {
+      const normalizedMax = normalizeDate(maxDate);
+      if (normalizedDate > normalizedMax) return true;
+    }
     return false;
   };
 
@@ -121,7 +134,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
     // Add empty cells for days before first day of month
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} style={{ width: '36px', height: '36px' }} />);
+      days.push(<div key={`empty-${i}`} style={{ width: '32px', height: '32px' }} />);
     }
 
     // Add actual days
@@ -137,13 +150,13 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
           disabled={disabled}
           onClick={() => handleDateClick(day)}
           style={{
-            width: '36px',
-            height: '36px',
+            width: '32px',
+            height: '32px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: 'DM Sans',
-            fontSize: '14px',
+            fontSize: '13px',
             fontWeight: selected ? 600 : 400,
             color: disabled ? '#D1D5DB' : selected ? '#FFFFFF' : inRange ? '#1E40AF' : '#374151',
             backgroundColor: disabled
@@ -154,7 +167,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
               ? '#EFF6FF'
               : 'transparent',
             border: 'none',
-            borderRadius: selected ? '8px' : '8px',
+            borderRadius: selected ? '6px' : '6px',
             cursor: disabled ? 'not-allowed' : 'pointer',
             transition: 'all 0.2s',
           }}
@@ -222,13 +235,13 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
             position: 'absolute',
             top: 'calc(100% + 4px)',
             left: 0,
-            zIndex: 1000,
+            zIndex: 9999999,
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E7EB',
             borderRadius: '12px',
             boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-            padding: '16px',
-            minWidth: '320px',
+            padding: '12px',
+            width: '280px',
           }}
         >
           {/* Month Navigation */}
@@ -306,22 +319,22 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(7, 36px)',
-              gap: '4px',
-              marginBottom: '8px',
+              gridTemplateColumns: 'repeat(7, 32px)',
+              gap: '3px',
+              marginBottom: '6px',
             }}
           >
             {daysOfWeek.map((day) => (
               <div
                 key={day}
                 style={{
-                  width: '36px',
-                  height: '32px',
+                  width: '32px',
+                  height: '28px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontFamily: 'DM Sans',
-                  fontSize: '12px',
+                  fontSize: '11px',
                   fontWeight: 600,
                   color: '#6B7280',
                 }}
@@ -335,8 +348,8 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(7, 36px)',
-              gap: '4px',
+              gridTemplateColumns: 'repeat(7, 32px)',
+              gap: '3px',
             }}
           >
             {generateCalendarDays()}
