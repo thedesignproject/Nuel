@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
 import { NotificationCard } from './NotificationCard';
+import { ReviewAlertModal } from './ReviewAlertModal';
 import { Bell, SlidersHorizontal } from '@phosphor-icons/react';
 
 export interface InventoryAlertsProps {
@@ -16,32 +17,67 @@ export interface InventoryAlertsProps {
  */
 export const InventoryAlerts = React.forwardRef<HTMLDivElement, InventoryAlertsProps>(
   ({ className }, ref) => {
-    const [alerts] = useState([
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [selectedAlert, setSelectedAlert] = useState<any>(null);
+
+    const [alerts, setAlerts] = useState([
       {
-        id: 1,
+        id: '1',
         severity: 'info' as const,
         title: 'Sales Below Forecast',
         description: 'High inventory of KMS at New Amina Terminal',
         location: 'New Amina Terminal - KMS',
         date: '20/05/2025',
+        status: 'info' as const,
+        statusLabel: 'Info',
+        region: 'New Amina Terminal',
+        impact: 'Medium - Inventory buildup',
+        reported: '20/05/2025',
       },
       {
-        id: 2,
+        id: '2',
         severity: 'warning' as const,
         title: 'Sales Above Forecast',
         description: 'High inventory of KMS at New Amina Terminal',
         location: 'New Amina Terminal - KMS',
         date: '20/05/2025',
+        status: 'warning' as const,
+        statusLabel: 'Warning',
+        region: 'New Amina Terminal',
+        impact: 'High - Stock shortage risk',
+        reported: '20/05/2025',
       },
       {
-        id: 3,
+        id: '3',
         severity: 'critical' as const,
         title: 'Sales Above Forecast',
         description: 'High inventory of KMS at New Amina Terminal',
         location: 'New Amina Terminal - KMS',
         date: '20/05/2025',
+        status: 'critical' as const,
+        statusLabel: 'Critical',
+        region: 'New Amina Terminal',
+        impact: 'Critical - Immediate action required',
+        reported: '20/05/2025',
       },
     ]);
+
+    const handleReviewAlert = (alert: any) => {
+      setSelectedAlert(alert);
+      setShowReviewModal(true);
+    };
+
+    const handleDismissCard = (id: string) => {
+      setAlerts(alerts.filter(alert => alert.id !== id));
+    };
+
+    const handleCompleteReview = (data: { priority: string; assignedTo: string; notes: string; }) => {
+      console.log('Review completed:', data);
+    };
+
+    const handleMarkUnread = () => {
+      console.log('Marked as unread');
+    };
 
     return (
       <div
@@ -102,8 +138,8 @@ export const InventoryAlerts = React.forwardRef<HTMLDivElement, InventoryAlertsP
                 date={alert.date}
                 primaryAction="Review"
                 secondaryAction="Dismiss"
-                onPrimaryAction={() => console.log(`Review alert ${alert.id}`)}
-                onSecondaryAction={() => console.log(`Dismiss alert ${alert.id}`)}
+                onPrimaryAction={() => handleReviewAlert(alert)}
+                onSecondaryAction={() => handleDismissCard(alert.id)}
                 className="w-full"
               />
             ))}
@@ -123,6 +159,15 @@ export const InventoryAlerts = React.forwardRef<HTMLDivElement, InventoryAlertsP
             }}
           />
         </div>
+
+        {/* Review Alert Modal */}
+        <ReviewAlertModal
+          isOpen={showReviewModal}
+          onClose={() => setShowReviewModal(false)}
+          alert={selectedAlert}
+          onComplete={handleCompleteReview}
+          onMarkUnread={handleMarkUnread}
+        />
       </div>
     );
   }

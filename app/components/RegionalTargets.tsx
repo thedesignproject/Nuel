@@ -437,19 +437,255 @@ export const RegionalTargets = React.forwardRef<HTMLDivElement, RegionalTargetsP
               </div>
             </>
           ) : (
-            // By Material View (Placeholder)
-            <div
-              style={{
-                padding: '48px 24px',
-                textAlign: 'center',
-                color: '#7F8FA4',
-                fontSize: '14px',
-                lineHeight: '22px',
-                fontFamily: 'DM Sans',
-              }}
-            >
-              By Material view coming soon
-            </div>
+            // By Material View
+            <>
+              {/* KTS Material */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {/* Material Header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <button
+                    onClick={() => toggleFacility('KTS')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {expandedFacilities.has('KTS') ? (
+                      <CaretUp size={16} weight="bold" color="#7F8FA4" />
+                    ) : (
+                      <CaretDown size={16} weight="bold" color="#7F8FA4" />
+                    )}
+                  </button>
+                  {materialIcons.KTS}
+                  <p style={{ fontSize: '16px', lineHeight: '24px', fontWeight: 600, color: '#17263D', fontFamily: 'DM Sans' }}>
+                    KTS (Potassium Thiosulfate)
+                  </p>
+                  <p style={{ fontSize: '14px', lineHeight: '22px', fontWeight: 400, color: '#7F8FA4', fontFamily: 'DM Sans' }}>
+                    Using 45% of total capacity — Target is at 65% capacity
+                  </p>
+
+                  {/* Alert Badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: '#FFD6DB', borderRadius: '6px', marginLeft: 'auto' }}>
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#FF3B30' }} />
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#FF3B30', fontFamily: 'DM Sans' }}>
+                      1 Alert
+                    </p>
+                  </div>
+
+                  {/* See Less Link */}
+                  <button
+                    onClick={() => toggleFacility('KTS')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '4px 8px',
+                    }}
+                  >
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#1C58F7', fontFamily: 'DM Sans' }}>
+                      {expandedFacilities.has('KTS') ? 'See Less' : 'See more'}
+                    </p>
+                    {expandedFacilities.has('KTS') ? (
+                      <CaretUp size={12} weight="bold" color="#1C58F7" />
+                    ) : (
+                      <CaretDown size={12} weight="bold" color="#1C58F7" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Single XL Progress Bar */}
+                {!expandedFacilities.has('KTS') && (
+                  <div style={{ paddingLeft: '28px' }}>
+                    <ProgressBar
+                      size="xl"
+                      name=""
+                      current={13487}
+                      target={18383}
+                      capacity={25207}
+                      percentage={47}
+                      status="critical"
+                      showSettings={false}
+                    />
+                  </div>
+                )}
+
+                {/* Facility Progress Bars (XL) */}
+                {expandedFacilities.has('KTS') && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '28px' }}>
+                    <ProgressBar
+                      size="xl"
+                      name="Lake Opal Terminal"
+                      icon={<Factory size={20} weight="regular" color="#1C58F7" />}
+                      current={13487}
+                      target={18383}
+                      capacity={25207}
+                      percentage={47}
+                      status="critical"
+                      onSettingsClick={() => handleSettingsClick('KTS - Lake Opal Terminal', 13487, 18383, 25207)}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* KMS Material */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {/* Material Header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <button
+                    onClick={() => toggleFacility('KMS')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {expandedFacilities.has('KMS') ? (
+                      <CaretUp size={16} weight="bold" color="#7F8FA4" />
+                    ) : (
+                      <CaretDown size={16} weight="bold" color="#7F8FA4" />
+                    )}
+                  </button>
+                  {materialIcons.KMS}
+                  <p style={{ fontSize: '16px', lineHeight: '24px', fontWeight: 600, color: '#17263D', fontFamily: 'DM Sans' }}>
+                    KMS (Potassium Magnesium Sulfate)
+                  </p>
+                  <p style={{ fontSize: '14px', lineHeight: '22px', fontWeight: 400, color: '#7F8FA4', fontFamily: 'DM Sans' }}>
+                    Using 68% of total capacity — Target is at 70% capacity
+                  </p>
+
+                  {/* Alert Badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: warning[100], borderRadius: '6px', marginLeft: 'auto' }}>
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: warning[500] }} />
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: warning[500], fontFamily: 'DM Sans' }}>
+                      1 Alert
+                    </p>
+                  </div>
+
+                  {/* See more Link */}
+                  <button
+                    onClick={() => toggleFacility('KMS')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '4px 8px',
+                    }}
+                  >
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#1C58F7', fontFamily: 'DM Sans' }}>
+                      {expandedFacilities.has('KMS') ? 'See Less' : 'See more'}
+                    </p>
+                    {expandedFacilities.has('KMS') ? (
+                      <CaretUp size={12} weight="bold" color="#1C58F7" />
+                    ) : (
+                      <CaretDown size={12} weight="bold" color="#1C58F7" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Single XL Progress Bar */}
+                <div style={{ paddingLeft: '28px' }}>
+                  <ProgressBar
+                    size="xl"
+                    name=""
+                    current={16829}
+                    target={16481}
+                    capacity={23063}
+                    percentage={68}
+                    status="warning"
+                    showSettings={false}
+                  />
+                </div>
+              </div>
+
+              {/* Thio-Sul Material */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {/* Material Header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <button
+                    onClick={() => toggleFacility('Thio-Sul')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {expandedFacilities.has('Thio-Sul') ? (
+                      <CaretUp size={16} weight="bold" color="#7F8FA4" />
+                    ) : (
+                      <CaretDown size={16} weight="bold" color="#7F8FA4" />
+                    )}
+                  </button>
+                  {materialIcons['Thio-Sul']}
+                  <p style={{ fontSize: '16px', lineHeight: '24px', fontWeight: 600, color: '#17263D', fontFamily: 'DM Sans' }}>
+                    Thio-Sul (Ammonium Thiosulfate)
+                  </p>
+                  <p style={{ fontSize: '14px', lineHeight: '22px', fontWeight: 400, color: '#7F8FA4', fontFamily: 'DM Sans' }}>
+                    Using 83% of total capacity — Target is at 85% capacity
+                  </p>
+
+                  {/* All Clear Badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '2px 8px', backgroundColor: '#D6F5E1', borderRadius: '6px', marginLeft: 'auto' }}>
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#34C759' }} />
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#34C759', fontFamily: 'DM Sans' }}>
+                      All clear
+                    </p>
+                  </div>
+
+                  {/* See more Link */}
+                  <button
+                    onClick={() => toggleFacility('Thio-Sul')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '4px 8px',
+                    }}
+                  >
+                    <p style={{ fontSize: '12px', lineHeight: '20px', fontWeight: 500, color: '#1C58F7', fontFamily: 'DM Sans' }}>
+                      {expandedFacilities.has('Thio-Sul') ? 'See Less' : 'See more'}
+                    </p>
+                    {expandedFacilities.has('Thio-Sul') ? (
+                      <CaretUp size={12} weight="bold" color="#1C58F7" />
+                    ) : (
+                      <CaretDown size={12} weight="bold" color="#1C58F7" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Single XL Progress Bar */}
+                <div style={{ paddingLeft: '28px' }}>
+                  <ProgressBar
+                    size="xl"
+                    name=""
+                    current={25673}
+                    target={26127}
+                    capacity={29628}
+                    percentage={83}
+                    status="good"
+                    showSettings={false}
+                  />
+                </div>
+              </div>
+            </>
           )}
         </div>
 

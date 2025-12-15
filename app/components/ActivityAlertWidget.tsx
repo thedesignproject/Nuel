@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { NotificationCard } from './NotificationCard';
+import { ReviewAlertModal } from './ReviewAlertModal';
 
 export interface ActivityAlertWidgetProps {
   /** Additional className */
@@ -22,24 +23,41 @@ export interface ActivityAlertWidgetProps {
 export const ActivityAlertWidget = React.forwardRef<HTMLDivElement, ActivityAlertWidgetProps>(
   ({ className }, ref) => {
     const [isExpanded, setIsExpanded] = useState(true);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [selectedAlert, setSelectedAlert] = useState<any>(null);
     const [alerts, setAlerts] = useState([
       {
-        id: 1,
+        id: '1',
         severity: 'critical' as const,
         title: 'Northeast Region Execution Rate Below 8…',
         description: 'Four terminals showing significant performance degradation requiring immediate attention',
+        status: 'critical' as const,
+        statusLabel: 'Critical',
+        region: 'Northeast',
+        impact: 'High - 4 terminals affected',
+        reported: '10/09/2025, 15:45:26',
       },
       {
-        id: 2,
+        id: '2',
         severity: 'warning' as const,
         title: 'Fuel Cost Impact Exceeding Forecast',
         description: 'Current fuel costs are 15% above budget projections for Q4',
+        status: 'warning' as const,
+        statusLabel: 'Warning',
+        region: 'Midwest',
+        impact: 'Medium - Budget variance',
+        reported: '10/09/2025, 14:30:12',
       },
       {
-        id: 3,
+        id: '3',
         severity: 'warning' as const,
         title: 'Maintenance Schedule Delay',
         description: 'Routine maintenance pushed back 2 weeks due to resource constraints',
+        status: 'warning' as const,
+        statusLabel: 'Warning',
+        region: 'Southeast',
+        impact: 'Low - Schedule adjustment',
+        reported: '10/09/2025, 13:15:45',
       },
     ]);
 
@@ -47,8 +65,27 @@ export const ActivityAlertWidget = React.forwardRef<HTMLDivElement, ActivityAler
       setAlerts([]);
     };
 
-    const handleDismissCard = (id: number) => {
+    const handleDismissCard = (id: string) => {
       setAlerts(alerts.filter(alert => alert.id !== id));
+    };
+
+    const handleReviewAlert = (alert: any) => {
+      setSelectedAlert(alert);
+      setShowReviewModal(true);
+    };
+
+    const handleCompleteReview = (data: {
+      priority: string;
+      assignedTo: string;
+      notes: string;
+    }) => {
+      console.log('Review completed:', data);
+      // You can add logic here to update the alert or send to backend
+    };
+
+    const handleMarkUnread = () => {
+      console.log('Marked as unread');
+      // You can add logic here to mark alert as unread
     };
 
     return (
@@ -133,7 +170,7 @@ export const ActivityAlertWidget = React.forwardRef<HTMLDivElement, ActivityAler
                       description={alert.description}
                       primaryAction="Review"
                       secondaryAction="Dismiss"
-                      onPrimaryAction={() => console.log(`Review alert ${alert.id}`)}
+                      onPrimaryAction={() => handleReviewAlert(alert)}
                       onSecondaryAction={() => handleDismissCard(alert.id)}
                       onClose={() => handleDismissCard(alert.id)}
                     />
@@ -143,6 +180,15 @@ export const ActivityAlertWidget = React.forwardRef<HTMLDivElement, ActivityAler
             </div>
           </div>
         )}
+
+        {/* Review Alert Modal */}
+        <ReviewAlertModal
+          isOpen={showReviewModal}
+          onClose={() => setShowReviewModal(false)}
+          alert={selectedAlert}
+          onComplete={handleCompleteReview}
+          onMarkUnread={handleMarkUnread}
+        />
       </div>
     );
   }

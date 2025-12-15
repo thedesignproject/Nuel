@@ -19,13 +19,57 @@ import { StatusPill } from '../components/StatusPill';
 import { BudgetPlanningChart } from '../components/BudgetPlanningChart';
 import { BudgetCard } from '../components/BudgetCard';
 import { ExecutionCard } from '../components/ExecutionCard';
+import { SandboxConfigModal } from '../components/SandboxConfigModal';
+import { SandboxResultsModal } from '../components/SandboxResultsModal';
+import { SandboxLoadingModal } from '../components/SandboxLoadingModal';
 import { useAuth } from '../context/AuthContext';
 import { LAYOUT_SPACING, COLORS, TYPOGRAPHY, SPACING } from '../design-tokens';
+import { calculateSimulationResults, SimulationResults } from '../utils/sandboxCalculations';
 
 export default function ForecastPage() {
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false);
   const [activeTabId, setActiveTabId] = useState('forecast-vs-actuals');
+  const [isSandboxMode, setIsSandboxMode] = useState(false);
+  const [showSandboxModal, setShowSandboxModal] = useState(false);
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [sandboxScenarios, setSandboxScenarios] = useState<any[]>([]);
+  const [simulationResults, setSimulationResults] = useState<SimulationResults | null>(null);
   const { logout } = useAuth();
+
+  // Handle toggle change - open modal when turning on
+  const handleSandboxToggle = (isOn: boolean) => {
+    if (isOn) {
+      setIsSandboxMode(true);
+      setShowSandboxModal(true);
+    } else {
+      // Turn off sandbox mode
+      setIsSandboxMode(false);
+      setShowResultsModal(false);
+      setSandboxScenarios([]);
+      setSimulationResults(null);
+    }
+  };
+
+  // Handle applying sandbox configurations
+  const handleApplySandbox = (scenarios: any[]) => {
+    setSandboxScenarios(scenarios);
+    setIsSandboxMode(true);
+    setShowSandboxModal(false);
+
+    // Show loading modal
+    setShowLoadingModal(true);
+
+    // Calculate simulation results after a brief delay
+    setTimeout(() => {
+      const results = calculateSimulationResults(scenarios);
+      setSimulationResults(results);
+
+      // Hide loading and show results
+      setShowLoadingModal(false);
+      setShowResultsModal(true);
+    }, 1500);
+  };
 
   // Define tabs
   const tabs: Tab[] = [
@@ -79,6 +123,9 @@ export default function ForecastPage() {
               <TopBar
                 title="Operational Forecasting & Optimization"
                 subtitle="Real-time, adaptive forecast that continuously optimizes based on live orders, inventory, and capacity."
+                showSandboxToggle={true}
+                isSandboxMode={isSandboxMode}
+                onSandboxToggle={handleSandboxToggle}
               />
             </div>
 
@@ -706,6 +753,31 @@ export default function ForecastPage() {
       <NotificationsPanel
         isOpen={isNotificationsPanelOpen}
         onClose={() => setIsNotificationsPanelOpen(false)}
+      />
+
+      {/* Sandbox Configuration Modal */}
+      <SandboxConfigModal
+        isOpen={showSandboxModal}
+        onClose={() => {
+          setShowSandboxModal(false);
+          setIsSandboxMode(false);
+        }}
+        onApply={handleApplySandbox}
+      />
+
+      {/* Sandbox Loading Modal */}
+      <SandboxLoadingModal isOpen={showLoadingModal} />
+
+      {/* Sandbox Results Modal */}
+      <SandboxResultsModal
+        isOpen={showResultsModal}
+        onClose={() => {
+          setShowResultsModal(false);
+          setIsSandboxMode(false);
+          setSandboxScenarios([]);
+          setSimulationResults(null);
+        }}
+        results={simulationResults}
       />
     </div>
   );
