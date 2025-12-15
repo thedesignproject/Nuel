@@ -45,8 +45,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkAuth = () => {
       const authStatus = localStorage.getItem('isAuthenticated');
       const userEmail = localStorage.getItem('userEmail');
+      const hasVisitedBefore = localStorage.getItem('hasVisitedBefore');
 
-      if (authStatus === 'true') {
+      // Auto-authenticate first-time users
+      if (!hasVisitedBefore) {
+        localStorage.setItem('hasVisitedBefore', 'true');
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userEmail', 'demo@nuel.com');
+        setIsAuthenticated(true);
+        setUser({
+          email: 'demo@nuel.com',
+          name: 'Demo User',
+        });
+      } else if (authStatus === 'true') {
         setIsAuthenticated(true);
         setUser({
           email: userEmail || 'user@nuel.com',
