@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { CaretLeft, CaretRight, Calendar } from '@phosphor-icons/react';
 
 interface DateRangePickerProps {
@@ -23,9 +24,18 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [selectingStart, setSelectingStart] = useState(true);
+  const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const daysOfWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+  // Update button position when calendar opens
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      setButtonRect(buttonRef.current.getBoundingClientRect());
+    }
+  }, [isOpen]);
 
   // Get days in month
   const getDaysInMonth = (date: Date) => {
@@ -196,6 +206,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
     <div style={{ position: 'relative', width: '100%' }}>
       {/* Input Field */}
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         style={{
@@ -229,13 +240,13 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
       </button>
 
       {/* Calendar Dropdown */}
-      {isOpen && (
+      {isOpen && buttonRect && typeof document !== 'undefined' && createPortal(
         <div
           style={{
-            position: 'absolute',
-            top: 'calc(100% + 4px)',
-            left: 0,
-            zIndex: 9999999,
+            position: 'fixed',
+            top: `${buttonRect.bottom + 4}px`,
+            left: `${buttonRect.left}px`,
+            zIndex: 99999999,
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E7EB',
             borderRadius: '12px',
@@ -369,7 +380,8 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
           >
             {selectingStart ? 'Select start date' : 'Select end date'}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

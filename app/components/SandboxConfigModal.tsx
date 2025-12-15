@@ -882,7 +882,7 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                       onStartDateChange={setTempShutdownStartDate}
                       onEndDateChange={setTempShutdownEndDate}
                       minDate={new Date(2025, 0, 1)} // Jan 1, 2025
-                      maxDate={new Date(2025, 9, 31)} // Oct 31, 2025
+                      maxDate={new Date(2026, 11, 31)} // Dec 31, 2026
                     />
                   </div>
 
@@ -1090,7 +1090,7 @@ export const SandboxConfigModal: React.FC<SandboxConfigModalProps> = ({
                       onStartDateChange={setTempDemandStartDate}
                       onEndDateChange={setTempDemandEndDate}
                       minDate={new Date(2025, 0, 1)} // Jan 1, 2025
-                      maxDate={new Date(2025, 9, 31)} // Oct 31, 2025
+                      maxDate={new Date(2026, 11, 31)} // Dec 31, 2026
                     />
                   </div>
 
