@@ -7,7 +7,7 @@ import { SectionHeader } from '../../components/SectionHeader';
 import { Button } from '../../components/Button';
 import { StatusPill } from '../../components/StatusPill';
 import { NotificationsPanel } from '../../components/NotificationsPanel';
-import { ActivityAlertWidget } from '../../components/ActivityAlertWidget';
+import { CompactAlertBanner } from '../../components/CompactAlertBanner';
 import { useAuth } from '../../context/AuthContext';
 import { LAYOUT_SPACING, TYPOGRAPHY, COLORS, BORDER_RADIUS } from '../../design-tokens';
 import { neutral, primary, gradients } from '../../../lib/design-tokens/colors';
@@ -335,9 +335,6 @@ export default function ManagementOrdersPage() {
 
             {/* Page Content */}
             <div className="flex flex-col gap-[24px]" style={{ overflowX: 'hidden' }}>
-              {/* Alert Widget */}
-              <ActivityAlertWidget />
-
               {/* Orders Section */}
               <div
                 style={{
@@ -630,6 +627,9 @@ export default function ManagementOrdersPage() {
 
       {/* Notifications Panel */}
       <NotificationsPanel isOpen={isNotificationsPanelOpen} onClose={() => setIsNotificationsPanelOpen(false)} />
+
+      {/* Compact Alert Banner */}
+      <CompactAlertBanner />
 
       {/* Custom Scrollbar Styling */}
       <style jsx global>{`

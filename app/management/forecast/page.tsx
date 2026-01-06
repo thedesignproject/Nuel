@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TopBar } from '../../components/TopBar';
 import { Sidebar } from '../../components/Sidebar';
 import { NotificationsPanel } from '../../components/NotificationsPanel';
-import { ActivityAlertWidget } from '../../components/ActivityAlertWidget';
+import { CompactAlertBanner } from '../../components/CompactAlertBanner';
 import { Tabs, Tab } from '../../components/Tabs';
 import { ForecastChart } from '../../components/ForecastChart';
 import { ForecastMetricCard } from '../../components/ForecastMetricCard';
@@ -128,11 +128,8 @@ export default function ManagementForecastPage() {
               />
             </div>
 
-            {/* Alert Widget + Tabs Section */}
+            {/* Tabs Section */}
             <div className="flex flex-col gap-[24px]" style={{ overflowX: 'hidden' }}>
-              {/* Alert Widget */}
-              <ActivityAlertWidget />
-
               {/* Tabs */}
               <Tabs tabs={tabs} activeTabId={activeTabId} onTabChange={setActiveTabId} />
 
@@ -334,6 +331,9 @@ export default function ManagementForecastPage() {
 
       {/* Notifications Panel */}
       <NotificationsPanel isOpen={isNotificationsPanelOpen} onClose={() => setIsNotificationsPanelOpen(false)} />
+
+      {/* Compact Alert Banner */}
+      <CompactAlertBanner />
 
       {/* Sandbox Modals */}
       <SandboxConfigModal
